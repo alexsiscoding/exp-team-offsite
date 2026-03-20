@@ -457,7 +457,12 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
 
   if(phase==="results"){
     const myResult=sabResults[name];
-    const sorted=Object.entries(myResult.scores).sort((a,b)=>b[1]-a[1]);
+    const sorted=Object.entries(myResult.scores).sort((a,b)=>{
+      const pctA=pct(a[1],a[0]);
+      const pctB=pct(b[1],b[0]);
+      if(pctB!==pctA) return pctB-pctA;
+      return b[1]-a[1];
+    });
     const sKey=selectedSab||myResult.top[0];
     const sab=SABOTEURS[sKey];
     return(
@@ -467,15 +472,8 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved to Airtable</p>
         <div style={{display:"flex",gap:8,marginBottom:"1.5rem",flexWrap:"wrap"}}>
           {myResult.top.map((k,i)=>(
-            <div key={k} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`}}>
+            <button key={k} onClick={()=>setSelectedSab(k)} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:sKey===k?(i===0?B.chartreuse:B.emerald):i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":sKey===k?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`,cursor:"pointer",fontFamily:sans,fontWeight:sKey===k?500:400}}>
               {i+1}. {SABOTEURS[k].name}
-            </div>
-          ))}
-        </div>
-        <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:"1.25rem"}}>
-          {sorted.map(([k])=>(
-            <button key={k} onClick={()=>setSelectedSab(k)} style={{fontSize:11,padding:"3px 10px",borderRadius:20,background:sKey===k?B.surface:"transparent",border:`1px solid ${sKey===k?B.emerald:B.border}`,color:sKey===k?B.sage:B.seaSage,cursor:"pointer",fontFamily:sans}}>
-              {SABOTEURS[k].name}
             </button>
           ))}
         </div>
@@ -503,13 +501,13 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         </div>
         <div style={{marginBottom:"1.5rem"}}>
           {sorted.map(([k,score])=>(
-            <div key={k} style={{display:"flex",alignItems:"center",gap:10,marginBottom:7}}>
-              <span style={{fontSize:12,width:130,color:myResult.top.includes(k)?B.night:B.seaSage,opacity:myResult.top.includes(k)?1:0.6,flexShrink:0}}>{SABOTEURS[k].name}</span>
+            <button key={k} onClick={()=>setSelectedSab(k)} style={{display:"flex",alignItems:"center",gap:10,marginBottom:7,width:"100%",background:sKey===k?B.surface:"transparent",border:`1px solid ${sKey===k?B.emerald:"transparent"}`,borderRadius:6,padding:"4px 6px",cursor:"pointer",textAlign:"left"}}>
+              <span style={{fontSize:12,width:130,color:myResult.top.includes(k)?B.night:B.seaSage,opacity:myResult.top.includes(k)?1:0.6,flexShrink:0,fontFamily:sans}}>{SABOTEURS[k].name}</span>
               <div style={{flex:1,height:4,background:B.surface,border:`1px solid ${B.border}`,borderRadius:2}}>
                 <div style={{height:"100%",width:`${pct(score,k)}%`,background:myResult.top[0]===k?B.chartreuse:myResult.top.includes(k)?B.seaSage:B.border,borderRadius:2,transition:"width 0.5s"}}/>
               </div>
-              <span style={{fontSize:11,color:B.seaSage,width:30,textAlign:"right"}}>{pct(score,k)}%</span>
-            </div>
+              <span style={{fontSize:11,color:sKey===k?B.emerald:B.seaSage,width:34,textAlign:"right",fontFamily:sans,fontWeight:sKey===k?500:400}}>{pct(score,k)}%</span>
+            </button>
           ))}
         </div>
         <div style={{background:B.surface,border:`1px solid ${B.border}`,borderRadius:8,padding:"1rem",marginBottom:"1.5rem"}}>
