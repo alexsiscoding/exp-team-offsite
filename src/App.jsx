@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const B = {
-  bg:        "#F6F3F2",  // Pristine — main background
-  surface:   "#EDEAE8",  // slightly darker pristine for cards/surfaces
-  night:     "#020503",  // Night — primary text
-  sage:      "#6F815C",  // Sage — headings, accents
-  seaSage:   "#95A78D",  // Sea Sage — secondary text, muted labels
-  emerald:   "#053F33",  // Emerald — strong accents, borders
-  chartreuse:"#638E4F",  // Chartreuse — buttons, highlights
-  border:    "#C8C4C0",  // soft pristine border
-  borderMid: "#9A9690",  // mid border
+  bg:        "#F6F3F2",
+  surface:   "#EDEAE8",
+  night:     "#020503",
+  sage:      "#6F815C",
+  seaSage:   "#95A78D",
+  emerald:   "#053F33",
+  chartreuse:"#638E4F",
+  border:    "#C8C4C0",
+  borderMid: "#9A9690",
 };
 const sans  = "'Helvetica Neue', Arial, sans-serif";
 const serif = "Georgia, serif";
 const MEMBERS = ["Alexsis","Andrew","Anna","Chris","Kandi","Kelly"];
 
 const ZONES = [
-  { id:"sunny",    icon:"☀️", label:"Sunny",        title:"At my best, I…",                          hint:"When you're in flow — what conditions or behaviors show up? Connect to a team value if it feels right: Caring, Proactive, Collaborative, Adaptable, Unity.",                          placeholder:"e.g. I'm energized by clear priorities and space to think. At my best I ask questions before jumping to solutions.",   bg:"#0f1a05", border:"#3a6a0a", text:"#a8d870", pill:{bg:"#f5c842",border:"#e6b800",text:"#5a3e00"} },
-  { id:"overcast", icon:"☁️", label:"Overcast",     title:"Early signs I'm stressed…",               hint:"Before the storm — subtle signals something's off. What do you go quiet about? What do you stop doing? This is your team's early warning system.",                                 placeholder:"e.g. I get quieter in group settings. I start over-checking my own work. My messages get shorter.",                    bg:"#0d0d20", border:"#3a3a6a", text:"#a0a8e8", pill:{bg:"#a0b8d8",border:"#7090b8",text:"#1a2e4a"} },
-  { id:"stormy",   icon:"⛈️", label:"Stormy",       title:"When I'm overwhelmed, you might notice…",  hint:"No labels needed — just describe the behavior. If you did Saboteurs pre-work, think about what your top one looks like in practice. What do people around you observe?",            placeholder:"e.g. I over-communicate trying to control outcomes, or go the opposite way and go silent.",                            bg:"#1a0d05", border:"#6a3a0a", text:"#e0a870", pill:{bg:"#7b5ea7",border:"#5a3d8a",text:"#f0eaff"} },
-  { id:"clearup",  icon:"🌈", label:"The clear-up", title:"How to help me when it's stormy…",         hint:"Be specific. 'Just check in' is less useful than 'send me a Slack instead of calling' or 'give me 10 min before we debrief.' What actually works for you?",                         placeholder:"e.g. Ask me 'do you need to vent or a solution?' A direct, kind nudge works better than tiptoeing.",                  bg:"#05101a", border:"#0a3a5a", text:"#70b8d8", pill:{bg:"#4caf89",border:"#2e8a60",text:"#0a2e1e"} },
+  { id:"sunny",    icon:"☀️", label:"Sunny",        title:"At my best, I…",                          hint:"When you're in flow — what conditions or behaviors show up? Connect to a team value if it feels right: Caring, Proactive, Collaborative, Adaptable, Unity.",          placeholder:"e.g. I'm energized by clear priorities and space to think. At my best I ask questions before jumping to solutions.",   bg:"#0f1a05", border:"#3a6a0a", text:"#a8d870", pill:{bg:"#f5c842",border:"#e6b800",text:"#5a3e00"} },
+  { id:"overcast", icon:"☁️", label:"Overcast",     title:"Early signs I'm stressed…",               hint:"Before the storm — subtle signals something's off. What do you go quiet about? What do you stop doing? This is your team's early warning system.",                 placeholder:"e.g. I get quieter in group settings. I start over-checking my own work. My messages get shorter.",                    bg:"#0d0d20", border:"#3a3a6a", text:"#a0a8e8", pill:{bg:"#a0b8d8",border:"#7090b8",text:"#1a2e4a"} },
+  { id:"stormy",   icon:"⛈️", label:"Stormy",       title:"When I'm overwhelmed, you might notice…",  hint:"No labels needed — just describe the behavior. If you did Saboteurs pre-work, think about what your top one looks like in practice. What do people around you observe?", placeholder:"e.g. I over-communicate trying to control outcomes, or go the opposite way and go silent.",                            bg:"#1a0d05", border:"#6a3a0a", text:"#e0a870", pill:{bg:"#7b5ea7",border:"#5a3d8a",text:"#f0eaff"} },
+  { id:"clearup",  icon:"🌈", label:"The clear-up", title:"How to help me when it's stormy…",         hint:"Be specific. 'Just check in' is less useful than 'send me a Slack instead of calling' or 'give me 10 min before we debrief.' What actually works for you?",         placeholder:"e.g. Ask me 'do you need to vent or a solution?' A direct, kind nudge works better than tiptoeing.",                  bg:"#05101a", border:"#0a3a5a", text:"#70b8d8", pill:{bg:"#4caf89",border:"#2e8a60",text:"#0a2e1e"} },
 ];
 
 const DISCUSS = [
@@ -76,12 +76,11 @@ function computeScores(ans){
 }
 function getTop(scores,n=3){return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k);}
 
-// ── SHARED ────────────────────────────────────────────────────────────────────
-function Btn({children,onClick,primary,ghost,disabled,style={}}){
+function Btn({children,onClick,primary,disabled,style={}}){
   return(
     <button onClick={onClick} disabled={disabled} style={{
       fontFamily:sans,fontSize:13,padding:"8px 18px",borderRadius:4,cursor:disabled?"default":"pointer",
-      background:primary?(disabled?"#9A9690":B.chartreuse):ghost?"transparent":B.surface,
+      background:primary?(disabled?"#9A9690":B.chartreuse):"transparent",
       border:`1px solid ${primary?(disabled?B.border:B.emerald):B.border}`,
       color:primary?(disabled?"#C8C4C0":"#FFFFFF"):B.night,
       opacity:disabled?0.6:1,...style
@@ -112,74 +111,42 @@ function TabBar({active,set,weatherCount,sabCount}){
   );
 }
 
-function SessionWarning(){
-  const[dismissed,setDismissed]=useState(false);
-  if(dismissed)return null;
-  return(
-    <div style={{background:"#FFF8E1",border:`1px solid #F0C040`,borderRadius:8,padding:"0.875rem 1.25rem",marginBottom:"1.5rem",display:"flex",alignItems:"flex-start",gap:12}}>
-      <span style={{fontSize:18,flexShrink:0,marginTop:1}}>⚠️</span>
-      <div style={{flex:1}}>
-        <p style={{fontFamily:sans,fontSize:13,color:"#7A5800",fontWeight:500,margin:"0 0 3px"}}>Save before you close</p>
-        <p style={{fontFamily:sans,fontSize:12,color:"#9A7020",lineHeight:1.6,margin:0}}>This session lives in memory only. If anyone closes the app, all responses disappear. Use "Save to Notion" on the report screen before wrapping up — it takes 10 seconds and keeps everything forever.</p>
-      </div>
-      <button onClick={()=>setDismissed(true)} style={{background:"transparent",border:"none",color:"#C0A040",cursor:"pointer",fontSize:16,flexShrink:0,padding:0,lineHeight:1}}>✕</button>
-    </div>
-  );
-}
-
 // ── WEATHER TAB ───────────────────────────────────────────────────────────────
-function WeatherTab({submissions,setSubmissions}){
+function WeatherTab({submissions,setSubmissions,sabResults}){
   const[phase,setPhase]=useState("intro");
   const[currentName,setCurrentName]=useState("");
   const[weatherReport,setWeatherReport]=useState(null);
   const[generating,setGenerating]=useState(false);
-  const[notionSaving,setNotionSaving]=useState(false);
-  const[notionDone,setNotionDone]=useState(false);
-  const[notionError,setNotionError]=useState(null);
-
-  function handleSubmit(name,responses){setSubmissions(s=>({...s,[name]:{...responses}}));setPhase("waiting");}
-
-  async function generateReport() {
-  setGenerating(true);
-  const summaries = Object.entries(submissions).map(([name, data]) =>
-    `${name}:\n  ☀️ Sunny: ${data.sunny}\n  ☁️ Overcast: ${data.overcast}\n  ⛈️ Stormy: ${data.stormy}\n  🌈 Clear-up: ${data.clearup}`
-  ).join("\n\n");
-
-  try {
-    const res = await fetch("/.netlify/functions/generate-report", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ summaries })
-    });
-    const data = await res.json();
-    setWeatherReport(data.text);
-  } catch (e) {
-    setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");
-  }
-  setGenerating(false);
-}
-
-  async function saveToNotion(saboteurResults) {
-  setNotionSaving(true);
-  setNotionError(null);
-  try {
-    await fetch("/.netlify/functions/save-to-notion", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ submissions, sabResults: saboteurResults })
-    });
-    setNotionDone(true);
-  } catch (e) {
-    setNotionError("Couldn't save to Notion. Try again or screenshot the report as a backup.");
-  }
-  setNotionSaving(false);
-}
-
   const names=Object.keys(submissions);
+
+  async function handleSubmit(name,responses){
+    // Save to Airtable immediately
+    try {
+      await fetch("/.netlify/functions/save-weather-map", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,...responses})
+      });
+    } catch(e){ console.error("Airtable save failed",e); }
+    setSubmissions(s=>({...s,[name]:{...responses}}));
+    setPhase("waiting");
+  }
+
+  async function generateReport(){
+    setGenerating(true);
+    const summaries=Object.entries(submissions).map(([name,data])=>
+      `${name}:\n  ☀️ Sunny: ${data.sunny}\n  ☁️ Overcast: ${data.overcast}\n  ⛈️ Stormy: ${data.stormy}\n  🌈 Clear-up: ${data.clearup}`
+    ).join("\n\n");
+    try{
+      const res=await fetch("/.netlify/functions/generate-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({summaries})});
+      const data=await res.json();
+      setWeatherReport(data.text);
+    }catch(e){setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");}
+    setGenerating(false);
+  }
 
   if(phase==="intro")return(
     <div style={{maxWidth:520,margin:"0 auto"}}>
-      <SessionWarning/>
       <p style={{fontFamily:sans,fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Team Weather Map<span style={{color:B.emerald}}>.</span></h2>
       <p style={{fontFamily:sans,fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.7}}>A getting-to-know-you activity built around how we actually work. Fill out your four zones privately — then reveal and discuss as a group.</p>
@@ -210,11 +177,10 @@ function WeatherTab({submissions,setSubmissions}){
   if(phase==="waiting")return(
     <div style={{maxWidth:420,margin:"0 auto",textAlign:"center",fontFamily:sans}}>
       <div style={{fontSize:32,marginBottom:"1rem",color:B.chartreuse}}>✓</div>
-      <h2 style={{fontFamily:serif,fontSize:"1.5rem",fontWeight:400,color:B.sage,marginBottom:"0.75rem"}}>Forecast submitted, {currentName}.</h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"2rem"}}>
-        {names.length} of {MEMBERS.length} in so far.<br/>
-        <span style={{color:B.seaSage}}>{names.join(" · ")}</span>
-      </p>
+      <h2 style={{fontFamily:serif,fontSize:"1.5rem",fontWeight:400,color:B.sage,marginBottom:"0.75rem"}}>Forecast saved, {currentName}.</h2>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.5rem"}}>{names.length} of {MEMBERS.length} in so far.</p>
+      <p style={{fontSize:12,color:B.seaSage,marginBottom:"2rem"}}>{names.join(" · ")}</p>
+      <p style={{fontSize:12,color:B.chartreuse,marginBottom:"2rem"}}>✓ Your responses are saved to Airtable — safe even if you close this tab.</p>
       <div style={{display:"flex",gap:10,justifyContent:"center"}}>
         <Btn onClick={()=>setPhase("intro")}>← Home</Btn>
         {names.length>=2&&<Btn primary onClick={()=>setPhase("reveal")}>Start reveal →</Btn>}
@@ -223,7 +189,18 @@ function WeatherTab({submissions,setSubmissions}){
   );
 
   if(phase==="reveal")return<RevealScreen submissions={submissions} onHome={()=>setPhase("intro")} onReport={()=>setPhase("report")}/>;
-  if(phase==="report")return<ReportScreen submissions={submissions} weatherReport={weatherReport} generating={generating} notionSaving={notionSaving} notionDone={notionDone} notionError={notionError} onGenerate={generateReport} onSaveToNotion={saveToNotion} onBack={()=>setPhase("reveal")} onHome={()=>setPhase("intro")}/>;
+
+  if(phase==="report")return(
+    <ReportScreen
+      submissions={submissions}
+      sabResults={sabResults}
+      weatherReport={weatherReport}
+      generating={generating}
+      onGenerate={generateReport}
+      onBack={()=>setPhase("reveal")}
+      onHome={()=>setPhase("intro")}
+    />
+  );
 }
 
 function FillScreen({name,onSubmit,onBack}){
@@ -308,20 +285,13 @@ function RevealScreen({submissions,onHome,onReport}){
   );
 }
 
-function ReportScreen({submissions,weatherReport,generating,notionSaving,notionDone,notionError,onGenerate,onSaveToNotion,onBack,onHome}){
+function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerate,onBack,onHome}){
   const names=Object.keys(submissions);
   return(
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
-      <div style={{background:"#FFF8E1",border:`1px solid #F0C040`,borderRadius:8,padding:"1rem 1.25rem",marginBottom:"1.75rem",display:"flex",alignItems:"flex-start",gap:12}}>
-        <span style={{fontSize:20,flexShrink:0}}>⚠️</span>
-        <div>
-          <p style={{fontSize:13,color:"#7A5800",fontWeight:500,margin:"0 0 3px"}}>Don't close this tab until you've saved</p>
-          <p style={{fontSize:12,color:"#9A7020",lineHeight:1.6,margin:0}}>All responses live in memory only. Hit "Save to Notion" before anyone closes the app — it takes 10 seconds and keeps everything permanently.</p>
-        </div>
-      </div>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.4rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Our collective forecast<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's climate, side by side.</p>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's climate, side by side. All responses are saved to Airtable.</p>
       {ZONES.map(z=>(
         <div key={z.id} style={{marginBottom:"2rem"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,paddingBottom:10,borderBottom:`1px solid ${B.border}`}}>
@@ -351,26 +321,6 @@ function ReportScreen({submissions,weatherReport,generating,notionSaving,notionD
         </div>
         {weatherReport&&<div style={{fontSize:13,color:B.night,lineHeight:1.85,whiteSpace:"pre-wrap",opacity:0.85}}>{weatherReport}</div>}
       </div>
-      <div style={{background:B.surface,border:`1px solid ${notionDone?"#2a6a3a":B.border}`,borderRadius:8,padding:"1.25rem",marginBottom:"1.5rem"}}>
-        {notionDone?(
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <span style={{fontSize:20}}>✅</span>
-            <div>
-              <p style={{fontSize:13,color:B.emerald,fontWeight:500,margin:"0 0 2px"}}>Saved to Notion</p>
-              <p style={{fontSize:12,color:B.seaSage,margin:0}}>Find it under "Experience Team Offsite 2026" in your workspace.</p>
-            </div>
-          </div>
-        ):(
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div>
-              <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,marginBottom:3}}>Save to Notion</p>
-              <p style={{fontSize:12,color:B.seaSage,margin:0}}>Creates "Experience Team Offsite 2026" with a page per person</p>
-            </div>
-            <Btn primary onClick={()=>onSaveToNotion({})} disabled={notionSaving}>{notionSaving?"Saving…":"Save to Notion →"}</Btn>
-          </div>
-        )}
-        {notionError&&<p style={{fontSize:12,color:"#cc4444",marginTop:10,margin:0}}>{notionError}</p>}
-      </div>
       <div style={{display:"flex",gap:10}}>
         <Btn onClick={onBack}>← Back to reveal</Btn>
         <Btn onClick={onHome}>Home</Btn>
@@ -387,21 +337,30 @@ function SaboteursTab({sabResults,setSabResults}){
   const[currentQ,setCurrentQ]=useState(0);
   const[selectedSab,setSelectedSab]=useState(null);
   const[viewTeam,setViewTeam]=useState(false);
+  const submittedNames=Object.keys(sabResults);
 
-  function handleAnswer(val){
+  async function handleAnswer(val){
     const q=QUESTIONS[currentQ];
     const newAns={...answers,[q.id]:val};
     setAnswers(newAns);
-    if(currentQ<QUESTIONS.length-1){setCurrentQ(currentQ+1);}
-    else{
+    if(currentQ<QUESTIONS.length-1){
+      setCurrentQ(currentQ+1);
+    } else {
       const scores=computeScores(newAns);
       const top=getTop(scores);
+      // Save to Airtable immediately
+      try {
+        await fetch("/.netlify/functions/save-saboteurs",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({name,top,scores})
+        });
+      } catch(e){ console.error("Airtable save failed",e); }
       setSabResults(prev=>({...prev,[name]:{top,scores}}));
-      setSelectedSab(top[0]);setPhase("results");
+      setSelectedSab(top[0]);
+      setPhase("results");
     }
   }
-
-  const submittedNames=Object.keys(sabResults);
 
   if(viewTeam){
     const sabCounts={};Object.keys(SABOTEURS).forEach(k=>sabCounts[k]=0);
@@ -506,7 +465,8 @@ function SaboteursTab({sabResults,setSabResults}){
     return(
       <div style={{maxWidth:560,margin:"0 auto",fontFamily:sans}}>
         <p style={{fontSize:11,color:B.seaSage,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{name}'s results</p>
-        <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"1.25rem"}}>Your top saboteurs</h2>
+        <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Your top saboteurs</h2>
+        <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved to Airtable</p>
         <div style={{display:"flex",gap:8,marginBottom:"1.5rem",flexWrap:"wrap"}}>
           {myResult.top.map((k,i)=>(
             <div key={k} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`}}>
@@ -568,6 +528,26 @@ export default function App(){
   const[tab,setTab]=useState("weather");
   const[submissions,setSubmissions]=useState({});
   const[sabResults,setSabResults]=useState({});
+  const[loading,setLoading]=useState(true);
+
+  // Load existing data from Airtable on startup
+  useEffect(()=>{
+    fetch("/.netlify/functions/get-submissions")
+      .then(r=>r.json())
+      .then(data=>{
+        if(data.submissions) setSubmissions(data.submissions);
+        if(data.sabResults) setSabResults(data.sabResults);
+      })
+      .catch(e=>console.error("Could not load from Airtable",e))
+      .finally(()=>setLoading(false));
+  },[]);
+
+  if(loading)return(
+    <div style={{background:B.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <p style={{fontFamily:sans,fontSize:13,color:B.seaSage}}>Loading…</p>
+    </div>
+  );
+
   return(
     <div style={{background:B.bg,minHeight:"100vh",padding:"2rem 1.5rem",color:B.night}}>
       <div style={{maxWidth:800,margin:"0 auto"}}>
@@ -579,7 +559,7 @@ export default function App(){
           </div>
         </div>
         <TabBar active={tab} set={setTab} weatherCount={Object.keys(submissions).length} sabCount={Object.keys(sabResults).length}/>
-        {tab==="weather"&&<WeatherTab submissions={submissions} setSubmissions={setSubmissions}/>}
+        {tab==="weather"&&<WeatherTab submissions={submissions} setSubmissions={setSubmissions} sabResults={sabResults}/>}
         {tab==="saboteurs"&&<SaboteursTab sabResults={sabResults} setSabResults={setSabResults}/>}
         <div style={{marginTop:"3rem",borderTop:`1px solid ${B.border}`,paddingTop:"1.25rem",textAlign:"center",fontFamily:sans,fontSize:11,letterSpacing:"0.08em",color:B.seaSage}}>
           Notable<span style={{color:B.sage}}>.</span> &nbsp;·&nbsp; Experience Team
