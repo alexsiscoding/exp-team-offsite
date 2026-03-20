@@ -20,3 +20,8 @@ exports.handler = async (event) => {
       }
     })
   });
+
+  const data = await res.json();
+  if (!res.ok) return { statusCode: 500, body: JSON.stringify(data) };
+  return { statusCode: 200, body: JSON.stringify({ success: true, id: data.id }) };
+};
