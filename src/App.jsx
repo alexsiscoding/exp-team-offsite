@@ -139,27 +139,41 @@ function WeatherTab({submissions,setSubmissions}){
 
   function handleSubmit(name,responses){setSubmissions(s=>({...s,[name]:{...responses}}));setPhase("waiting");}
 
-  async function generateReport(){
-    setGenerating(true);
-    const summaries=Object.entries(submissions).map(([name,data])=>
-      `${name}:\n  ☀️ Sunny: ${data.sunny}\n  ☁️ Overcast: ${data.overcast}\n  ⛈️ Stormy: ${data.stormy}\n  🌈 Clear-up: ${data.clearup}`
-    ).join("\n\n");
-    try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:`You are wrapping up a team icebreaker activity called the Team Weather Map for the Experience Team at Notable Capital. Each person filled in four zones: Sunny (at their best), Overcast (early stress signals), Stormy (when overwhelmed), and Clear-up (how to help them).\n\nHere are all the responses:\n\n${summaries}\n\nWrite a warm, specific "Team Weather Report" wrap-up script the team reads aloud. Structure it in exactly three parts:\n1. "Our High-Pressure System" — 2-3 common themes from Sunny. What is this team's collective power zone?\n2. "Incoming Clouds" — 1-2 common stress patterns from Overcast and Stormy. Name behaviors specifically (without labeling anyone).\n3. "The Safety Umbrella" — most actionable commitments from Clear-up. What can this team agree to do for each other?\n\nEnd with one short genuine closing thought (2-3 sentences). Warm, grounded, specific to these actual responses — not generic. Don't use placeholder brackets.`}]})});
-      const data=await res.json();
-      setWeatherReport(data.content[0].text);
-    }catch(e){setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");}
-    setGenerating(false);
-  }
+  async function generateReport() {
+  setGenerating(true);
+  const summaries = Object.entries(submissions).map(([name, data]) =>
+    `${name}:\n  ☀️ Sunny: ${data.sunny}\n  ☁️ Overcast: ${data.overcast}\n  ⛈️ Stormy: ${data.stormy}\n  🌈 Clear-up: ${data.clearup}`
+  ).join("\n\n");
 
-  async function saveToNotion(saboteurResults){
-    setNotionSaving(true);setNotionError(null);
-    try{
-      await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,mcp_servers:[{type:"url",url:"https://mcp.notion.com/mcp",name:"notion"}],messages:[{role:"user",content:`Create a Notion page called "Experience Team Offsite 2026" with icon 🌤. Then create one child page per person below, titled with their name and icon 🌤, containing their Weather Map and Saboteur results formatted with headings and emojis.\n\n${MEMBERS.map(name=>{const w=submissions[name];const s=saboteurResults[name];return`**${name}**\nWeather Map:\n- ☀️ Sunny: ${w?w.sunny:"Not yet completed"}\n- ☁️ Overcast: ${w?w.overcast:"Not yet completed"}\n- ⛈️ Stormy: ${w?w.stormy:"Not yet completed"}\n- 🌈 Clear-up: ${w?w.clearup:"Not yet completed"}\n\nSaboteurs:\n${s?`- #1: ${s[0]}\n- #2: ${s[1]}\n- #3: ${s[2]}`:"Assessment not yet completed"}`}).join("\n\n")}\n\nUse actual responses — don't summarize or paraphrase.`}]})});
-      setNotionDone(true);
-    }catch(e){setNotionError("Couldn't save to Notion. Try again or screenshot the report as a backup.");}
-    setNotionSaving(false);
+  try {
+    const res = await fetch("/.netlify/functions/generate-report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ summaries })
+    });
+    const data = await res.json();
+    setWeatherReport(data.text);
+  } catch (e) {
+    setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");
   }
+  setGenerating(false);
+}
+
+  async function saveToNotion(saboteurResults) {
+  setNotionSaving(true);
+  setNotionError(null);
+  try {
+    await fetch("/.netlify/functions/save-to-notion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ submissions, sabResults: saboteurResults })
+    });
+    setNotionDone(true);
+  } catch (e) {
+    setNotionError("Couldn't save to Notion. Try again or screenshot the report as a backup.");
+  }
+  setNotionSaving(false);
+}
 
   const names=Object.keys(submissions);
 
