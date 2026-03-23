@@ -3,37 +3,36 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: "Method not allowed" };
   }
 
-  let body;
-  try {
-    body = JSON.parse(event.body);
-  } catch(e) {
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON", detail: e.message }) };
-  }
+  const { name, sunny, overcast, stormy, clearup } = JSON.parse(event.body);
 
-  const { name, sunny, overcast, stormy, clearup } = body;
-
-  if (!process.env.AIRTABLE_TOKEN) {
-    return { statusCode: 500, body: JSON.stringify({ error: "AIRTABLE_TOKEN not set" }) };
-  }
-
-  console.log("Token present:", !!process.env.AIRTABLE_TOKEN);
-  console.log("Saving weather map for:", name);
-
-  const res = await fetch(`https://api.airtable.com/v0/appDdGY1mWixS5cTb/Weather%20Map`, {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${process.env.AIRTABLE_TOKEN}`,
       "Content-Type": "application/json",
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      fields: { Name: name, Sunny: sunny, Overcast: overcast, Stormy: stormy, Clearup: clearup, Timestamp: new Date().toISOString() }
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      mcp_servers: [{ type: "url", url: "https://mcp.notion.com/mcp", name: "notion" }],
+      messages: [{
+        role: "user",
+        content: `Add a new row to the Notion database with ID cf3e054a37af4f919df6b9693031e9dc with these exact values:
+- Name: ${name}
+- Sunny: ${sunny}
+- Overcast: ${overcast}
+- Stormy: ${stormy}
+- Clearup: ${clearup}
+
+Just create the row, nothing else.`
+      }]
     })
   });
 
   const data = await res.json();
-  console.log("Airtable response status:", res.status);
-  console.log("Airtable response body:", JSON.stringify(data));
-
-  if (!res.ok) return { statusCode: 500, body: JSON.stringify({ error: "Airtable error", detail: data }) };
-  return { statusCode: 200, body: JSON.stringify({ success: true, id: data.id }) };
+  console.log("Status:", res.status);
+  console.log("Response:", JSON.stringify(data).slice(0, 500));
+  if (!res.ok) return { statusCode: 500, body: JSON.stringify({ error: data }) };
+  return { statusCode: 200, body: JSON.stringify({ success: true }) };
 };
