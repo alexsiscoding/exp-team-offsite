@@ -655,9 +655,9 @@ function FacilitatorTab({setSabResults,setSubmissions}){
   const[data,setData]=useState(()=>Object.fromEntries(MEMBERS.map(m=>[m,{sab:defaultSab(),weather:defaultWeather()}])));
   const[saved,setSaved]=useState(false);
 
-  function setSabTop(member,idx,val){
-    setData(d=>{const updated={...d,[member]:{...d[member],sab:{...d[member].sab,top:d[member].sab.top.map((k,i)=>i===idx?val:k)}}});return updated;});
-  }
+function setSabTop(member,idx,val){
+  setData(d=>({...d,[member]:{...d[member],sab:{...d[member].sab,top:d[member].sab.top.map((k,i)=>i===idx?val:k)}}}));
+}
   function setWeather(member,zone,val){
     setData(d=>({...d,[member]:{...d[member],weather:{...d[member].weather,[zone]:val}}}));
   }
