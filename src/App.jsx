@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+<Btn primary onClick={()=>validName&&setPhase("fillimport { useState, useEffect } from "react";
 
 const B = {
   bg:        "#F6F3F2",
@@ -535,6 +535,7 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
   const[weatherReport,setWeatherReport]=useState(null);
   const[generating,setGenerating]=useState(false);
   const names=Object.keys(submissions);
+  const validName = currentName && currentName !== "";
 
   async function handleSubmit(name,responses){
     try{
@@ -577,7 +578,7 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
         ))}
       </div>
       <label style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,display:"block",marginBottom:8}}>Your name</label>
-      <select onChange={e=>setCurrentName(e.target.value)} defaultValue="" style={{width:"100%",marginBottom:"1rem",fontSize:14,background:"#FFFFFF",color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"9px 10px"}}>
+      <select value={currentName} onChange={e=>setCurrentName(e.target.value)} style={{width:"100%",marginBottom:"1rem",fontSize:14,background:"#FFFFFF",color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"9px 10px"}}>
         <option value="">Select your name…</option>
         {MEMBERS.map(m=><option key={m} value={m}>{m}{submissions[m]?" ✓":""}</option>)}
       </select>
@@ -749,8 +750,16 @@ export default function App(){
     fetch("/.netlify/functions/get-submissions")
       .then(r=>r.json())
       .then(data=>{
-        if(data.submissions)setSubmissions(data.submissions);
-        if(data.sabResults)setSabResults(data.sabResults);
+        if(data.submissions){
+          const clean={};
+          Object.entries(data.submissions).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});
+          setSubmissions(clean);
+        }
+        if(data.sabResults){
+          const clean={};
+          Object.entries(data.sabResults).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});
+          setSabResults(clean);
+        }
       })
       .catch(e=>console.error("Could not load from Airtable",e))
       .finally(()=>setLoading(false));
