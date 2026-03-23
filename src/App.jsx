@@ -333,7 +333,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
 
   if(phase==="results"){
     const myResult=sabResults[name];
-    // Sort full breakdown by percentage, highest to lowest
     const sorted=Object.entries(myResult.scores).sort((a,b)=>{const pA=pct(a[1],a[0]);const pB=pct(b[1],b[0]);if(pB!==pA)return pB-pA;return b[1]-a[1];});
     const sKey=selectedSab||myResult.top[0];const sab=SABOTEURS[sKey];
     return(
@@ -341,7 +340,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         <p style={{fontSize:11,color:B.seaSage,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{name}'s results</p>
         <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Your top saboteurs</h2>
         <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved</p>
-        {/* Top 3 — names only, no percentages */}
         <div style={{display:"flex",gap:8,marginBottom:"1.5rem",flexWrap:"wrap"}}>
           {myResult.top.map((k,i)=>(
             <button key={k} onClick={()=>setSelectedSab(k)} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:sKey===k?(i===0?B.chartreuse:B.emerald):i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":sKey===k?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`,cursor:"pointer",fontFamily:sans,fontWeight:sKey===k?500:400}}>
@@ -354,7 +352,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
             <span style={{fontSize:22}}>{sab.emoji}</span>
             <div>
               <p style={{fontFamily:serif,fontWeight:400,margin:0,fontSize:15,color:B.sage}}>{sab.name}</p>
-              {/* Percentage removed from reveal display per edit log */}
             </div>
           </div>
           <p style={{fontSize:13,lineHeight:1.7,color:B.night,opacity:0.8,marginBottom:12}}>{sab.desc}</p>
@@ -366,7 +363,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:12}}>
             {sab.signs.map((s,i)=><p key={i} style={{fontSize:12,margin:0,color:B.night,opacity:0.75,lineHeight:1.5}}>· {s}</p>)}
           </div>
-          {/* Famous person / resonant quote placeholder — content TBD */}
           {(sab.famousPerson||sab.famousQuote)&&(
             <div style={{borderTop:`1px solid ${B.border}`,paddingTop:10,marginBottom:10}}>
               <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,margin:"0 0 4px"}}>You're in good company</p>
@@ -379,7 +375,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
             <p style={{fontSize:12,color:B.chartreuse,margin:0}}>{sab.gift}</p>
           </div>
         </div>
-        {/* Full breakdown — sorted by %, percentages shown in bar chart only */}
         <div style={{marginBottom:"1.5rem"}}>
           {sorted.map(([k,score])=>(
             <button key={k} onClick={()=>setSelectedSab(k)} style={{display:"flex",alignItems:"center",gap:10,marginBottom:7,width:"100%",background:sKey===k?B.surface:"transparent",border:`1px solid ${sKey===k?B.emerald:"transparent"}`,borderRadius:6,padding:"4px 6px",cursor:"pointer",textAlign:"left"}}>
@@ -585,7 +580,29 @@ function RevealScreen({submissions,onHome,onReport}){
 
 // ─── REPORT SCREEN ────────────────────────────────────────────────────────────
 function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerate,onBack,onHome}){
+  const[sending,setSending]=useState(false);
+  const[sent,setSent]=useState(false);
   const names=Object.keys(submissions);
+
+  async function handleSendReport(){
+    setSending(true);
+    try{
+      await fetch("/.netlify/functions/send-report",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          weatherMaps:submissions,
+          saboteurResults:sabResults,
+          aiWrapUp:weatherReport,
+        }),
+      });
+      setSent(true);
+    }catch(e){
+      alert("Couldn't send — try again.");
+    }
+    setSending(false);
+  }
+
   return(
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.4rem"}}>Experience Team · Offsite 2026</p>
@@ -617,9 +634,13 @@ function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerat
         </div>
         {weatherReport&&<div style={{fontSize:13,color:B.night,lineHeight:1.85,whiteSpace:"pre-wrap",opacity:0.85,marginTop:"1rem"}}>{weatherReport}</div>}
       </div>
-      <div style={{display:"flex",gap:10}}>
+      <div style={{display:"flex",gap:10,alignItems:"center"}}>
         <Btn onClick={onBack}>← Back to reveal</Btn>
         <Btn onClick={onHome}>Home</Btn>
+        <Btn primary onClick={handleSendReport} disabled={sending||sent}>
+          {sent?"✓ Sent":sending?"Sending…":"Email me this report"}
+        </Btn>
+        {sent&&<span style={{fontSize:12,color:B.chartreuse}}>Sent to abass@notablecap.com</span>}
       </div>
       <ElevateFooter/>
     </div>
@@ -663,8 +684,6 @@ function FacilitatorTab({setSabResults,setSubmissions}){
         {MEMBERS.map(m=>(
           <div key={m} style={{background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:10,padding:"1.25rem"}}>
             <p style={{fontFamily:serif,fontSize:16,color:B.sage,margin:"0 0 1rem",fontWeight:400}}>{m}</p>
-
-            {/* Saboteur dropdowns */}
             <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,margin:"0 0 8px"}}>Top 3 saboteurs</p>
             <div style={{display:"flex",gap:8,marginBottom:"1.25rem",flexWrap:"wrap"}}>
               {[0,1,2].map(i=>(
@@ -681,8 +700,6 @@ function FacilitatorTab({setSabResults,setSubmissions}){
                 </div>
               ))}
             </div>
-
-            {/* Weather map fields */}
             <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,margin:"0 0 8px"}}>Weather map</p>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {ZONES.map(z=>(
