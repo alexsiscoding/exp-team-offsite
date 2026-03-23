@@ -1,4 +1,4 @@
-<Btn primary onClick={()=>validName&&setPhase("fillimport { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const B = {
   bg:        "#F6F3F2",
@@ -13,38 +13,13 @@ const B = {
 const sans  = "'Helvetica Neue', Arial, sans-serif";
 const serif = "Georgia, serif";
 const MEMBERS = ["Alexsis","Andrew","Anna","Chris","Kandi","Kelly"];
-
 const ELEVATE = ["Efficiency","Learning","Expertise","Vision","Accountability","Teamwork","Engagement"];
 
 const ZONES = [
-  {
-    id:"sunny", icon:"☀️", label:"Sunny",
-    title:"At my best, I…",
-    hint:"Describe your behaviors, mindset, and how you engage with others when you're feeling energized, focused, and effective. How does this connect with ELEVATE?",
-    placeholder:"e.g. I bring clarity to ambiguous situations and energize others around shared goals. I connect to Teamwork and Vision.",
-    bg:"#0f1a05", border:"#3a6a0a", text:"#a8d870", pill:{bg:"#f5c842",border:"#e6b800",text:"#5a3e00"}
-  },
-  {
-    id:"overcast", icon:"☁️", label:"Overcast",
-    title:"Early signs I'm stressed…",
-    hint:"The subtle, early clues that you're starting to feel pressure. These are the small behavioral changes or shifts others might notice before things escalate.",
-    placeholder:"e.g. I get quieter in meetings. I start asking more questions than usual. My responses get shorter.",
-    bg:"#0d0d20", border:"#3a3a6a", text:"#a0a8e8", pill:{bg:"#a0b8d8",border:"#7090b8",text:"#1a2e4a"}
-  },
-  {
-    id:"stormy", icon:"⛈️", label:"Stormy",
-    title:"When I'm overwhelmed, you might notice…",
-    hint:"What it looks like when you're at capacity or under significant stress. Be honest about how you show up when things feel difficult.",
-    placeholder:"e.g. I withdraw and stop asking for help. I can become overly focused on details and lose sight of the bigger picture.",
-    bg:"#1a0d05", border:"#6a3a0a", text:"#e0a870", pill:{bg:"#7b5ea7",border:"#5a3d8a",text:"#f0eaff"}
-  },
-  {
-    id:"clearup", icon:"🌈", label:"The clear-up",
-    title:"How others can help…",
-    hint:"What support is actually useful when you're stressed or overwhelmed. Be specific about what helps you reset, refocus, or move forward.",
-    placeholder:"e.g. Give me 15 minutes to decompress, then check in with 'do you need to talk it through or just vent?'",
-    bg:"#05101a", border:"#0a3a5a", text:"#70b8d8", pill:{bg:"#4caf89",border:"#2e8a60",text:"#0a2e1e"}
-  },
+  { id:"sunny",    icon:"☀️", label:"Sunny",        title:"At my best, I…",                          hint:"Describe your behaviors, mindset, and how you engage with others when you're feeling energized, focused, and effective. How does this connect with ELEVATE?",           placeholder:"e.g. I bring clarity to ambiguous situations and energize others around shared goals. I connect to Teamwork and Vision.",   bg:"#0f1a05", border:"#3a6a0a", text:"#a8d870", pill:{bg:"#f5c842",border:"#e6b800",text:"#5a3e00"} },
+  { id:"overcast", icon:"☁️", label:"Overcast",     title:"Early signs I'm stressed…",               hint:"The subtle, early clues that you're starting to feel pressure. These are the small behavioral changes or shifts others might notice before things escalate.",            placeholder:"e.g. I get quieter in meetings. I start asking more questions than usual. My responses get shorter.",                    bg:"#0d0d20", border:"#3a3a6a", text:"#a0a8e8", pill:{bg:"#a0b8d8",border:"#7090b8",text:"#1a2e4a"} },
+  { id:"stormy",   icon:"⛈️", label:"Stormy",       title:"When I'm overwhelmed, you might notice…",  hint:"What it looks like when you're at capacity or under significant stress. Be honest about how you show up when things feel difficult.",                                   placeholder:"e.g. I withdraw and stop asking for help. I can become overly focused on details and lose sight of the bigger picture.",   bg:"#1a0d05", border:"#6a3a0a", text:"#e0a870", pill:{bg:"#7b5ea7",border:"#5a3d8a",text:"#f0eaff"} },
+  { id:"clearup",  icon:"🌈", label:"The clear-up", title:"How others can help…",                     hint:"What support is actually useful when you're stressed or overwhelmed. Be specific about what helps you reset, refocus, or move forward.",                                placeholder:"e.g. Give me 15 minutes to decompress, then check in with 'do you need to talk it through or just vent?'",               bg:"#05101a", border:"#0a3a5a", text:"#70b8d8", pill:{bg:"#4caf89",border:"#2e8a60",text:"#0a2e1e"} },
 ];
 
 const DISCUSS = [
@@ -57,120 +32,48 @@ const DISCUSS = [
 ];
 
 const SABOTEURS = {
-  judge:         {
-    name:"The Judge", emoji:"⚖️",
-    desc:"The master saboteur that lives in everyone. It finds fault with yourself, others, and circumstances — and turns mistakes into lasting shame or resentment.",
-    work:"At work, The Judge shows up as harsh self-criticism after mistakes, holding others to impossibly high standards, and difficulty moving forward after setbacks. It can make feedback feel like an attack rather than an opportunity.",
-    signs:["Replays past mistakes repeatedly","Highly critical of self and others","Turns small errors into big failures","Struggles to celebrate wins","Holds grudges or resentment toward others","Difficult to receive feedback without defensiveness"],
-    gift:"Sharp discernment, high standards, strong accountability"
-  },
-  avoider:       {
-    name:"Avoider", emoji:"🌿",
-    desc:"Focuses on the positive and pleasant to avoid difficult tasks, conflict, and hard conversations — often until it's too late.",
-    work:"At work, Avoider shows up as procrastinating on tough decisions, sidestepping conflict, over-prioritizing pleasant tasks, and difficulty delivering hard news or feedback.",
-    signs:["Delays difficult conversations","Changes subject when tension arises","Keeps busy with low-priority tasks","Agrees to keep the peace","Minimizes or dismisses serious issues","Struggles to set limits with others"],
-    gift:"Positivity, pleasure in the moment, natural harmony-builder"
-  },
-  controller:    {
-    name:"Controller", emoji:"🎯",
-    desc:"An anxiety-driven need to take charge and control outcomes — including bending people and situations to a specific will.",
-    work:"At work, Controller shows up as micromanaging, difficulty trusting teammates, frustration when things go off-plan, and a tendency to take over rather than collaborate.",
-    signs:["Struggles to hand off tasks","Frustrated when direction isn't followed","Takes over when things feel uncertain","Difficulty sitting with ambiguity","Can come across as domineering","Needs to know every detail"],
-    gift:"Decisive, action-oriented, excellent in high-pressure situations"
-  },
-  hyperAchiever: {
-    name:"Hyper-Achiever", emoji:"🏆",
-    desc:"Dependent on constant performance and achievement for self-worth. Self-esteem is tied to the last result, not internal value.",
-    work:"At work, Hyper-Achiever shows up as difficulty resting, guilt during slow periods, overworking, comparing output to others, and struggling to disconnect from work identity.",
-    signs:["Self-worth rises and falls with results","Guilt when not producing","Compares own output to teammates","Difficulty celebrating 'enough'","Overcommits to prove value","Struggles to ask for help"],
-    gift:"High drive, ambition, strong results-orientation"
-  },
-  hyperRational: {
-    name:"Hyper-Rational", emoji:"🔬",
-    desc:"Overreliance on logic and analysis — to the point of dismissing or minimizing emotions in themselves and others.",
-    work:"At work, Hyper-Rational shows up as seeming cold or detached, dismissing team morale concerns, prioritizing efficiency over connection, and struggling with empathy in conflict.",
-    signs:["Dismisses emotional concerns as unimportant","Seen as cold or disconnected","Frustrated by 'irrational' behavior","Skips the human side of decisions","Struggles with ambiguous or people-centered problems","Difficulty showing vulnerability"],
-    gift:"Clear-headed thinking, objectivity, analytical precision"
-  },
-  hyperVigilant: {
-    name:"Hyper-Vigilant", emoji:"👁️",
-    desc:"Persistent anxiety about what could go wrong. Always scanning for danger, risk, or failure — even when things are going well.",
-    work:"At work, Hyper-Vigilant shows up as over-preparing, catastrophizing, difficulty relaxing into good news, and slowing down decisions with excessive risk analysis.",
-    signs:["Anticipates worst-case scenarios constantly","Difficulty trusting that things are actually okay","Over-prepares for every situation","Second-guesses decisions after the fact","Feels responsible for preventing all bad outcomes","Struggle to enjoy success before moving to the next worry"],
-    gift:"Thorough preparation, risk awareness, anticipates problems early"
-  },
-  pleaser:       {
-    name:"Pleaser", emoji:"🤝",
-    desc:"Gains acceptance and love by focusing on helping, pleasing, and flattering others — often at the expense of their own needs.",
-    work:"At work, Pleaser shows up as difficulty saying no, over-helping to the point of burnout, avoiding feedback that might disappoint, and needing approval to feel secure.",
-    signs:["Says yes when they mean no","Struggles to set limits with colleagues","Over-invests in others' happiness","Needs approval to feel valued","Avoids disappointing others at all costs","Takes on too much to seem helpful"],
-    gift:"Empathetic, generous, deeply collaborative"
-  },
-  restless:      {
-    name:"Restless", emoji:"⚡",
-    desc:"Constantly seeking the next exciting thing — rarely at peace with the present. Novelty is safety; stillness feels like stagnation.",
-    work:"At work, Restless shows up as losing interest in projects mid-way, jumping to new ideas before finishing current ones, difficulty with routine, and being hard to pin down.",
-    signs:["Moves quickly from one project to the next","Bored by repetitive or routine work","Starts things more easily than finishing them","Needs constant stimulation to stay engaged","Can seem scattered or uncommitted","Struggles with long, slow-burn initiatives"],
-    gift:"High energy, creative curiosity, thrives in fast-moving environments"
-  },
-  stickler:      {
-    name:"Stickler", emoji:"📐",
-    desc:"Perfectionism and an intense need for order and structure. Turns everything into a 'should' or 'must' — for themselves and others.",
-    work:"At work, Stickler shows up as difficulty letting go of details, frustration with messy processes, holding others to rigid standards, and getting stuck in 'perfect' rather than 'done'.",
-    signs:["Difficulty letting 'good enough' be enough","Strong frustration with disorder","High standards that extend to teammates","Gets stuck refining rather than finishing","Finds it hard to delegate to a different process","Can slow teams down with over-editing"],
-    gift:"Reliable, precise, sets the bar for quality"
-  },
-  victim:        {
-    name:"Victim", emoji:"🫂",
-    desc:"Uses emotional intensity and a sense of being wronged to gain attention, connection, or sympathy — often without realizing it.",
-    work:"At work, Victim shows up as feeling overlooked or unappreciated, taking feedback personally, building resentment quietly, and sometimes using struggle to connect with others.",
-    signs:["Feels effort often goes unrecognized","Takes criticism personally","Builds quiet resentment over time","Uses stress or hardship to bond with others","Difficulty separating identity from setbacks","Can feel like the team doesn't understand their contribution"],
-    gift:"Deep emotional sensitivity, strong sense of fairness and injustice"
-  },
+  judge:         { name:"The Judge",       emoji:"⚖️",  desc:"The master saboteur that lives in everyone. It finds fault with yourself, others, and circumstances — and turns mistakes into lasting shame or resentment.",                                                                                        work:"At work, The Judge shows up as harsh self-criticism after mistakes, holding others to impossibly high standards, and difficulty moving forward after setbacks. It can make feedback feel like an attack rather than an opportunity.",                                       signs:["Replays past mistakes repeatedly","Highly critical of self and others","Turns small errors into big failures","Struggles to celebrate wins","Holds grudges or resentment toward others","Difficult to receive feedback without defensiveness"], gift:"Sharp discernment, high standards, strong accountability" },
+  avoider:       { name:"Avoider",          emoji:"🌿",  desc:"Focuses on the positive and pleasant to avoid difficult tasks, conflict, and hard conversations — often until it's too late.",                                                                                                                       work:"At work, Avoider shows up as procrastinating on tough decisions, sidestepping conflict, over-prioritizing pleasant tasks, and difficulty delivering hard news or feedback.",                                                                                               signs:["Delays difficult conversations","Changes subject when tension arises","Keeps busy with low-priority tasks","Agrees to keep the peace","Minimizes or dismisses serious issues","Struggles to set limits with others"],                         gift:"Positivity, pleasure in the moment, natural harmony-builder" },
+  controller:    { name:"Controller",       emoji:"🎯",  desc:"An anxiety-driven need to take charge and control outcomes — including bending people and situations to a specific will.",                                                                                                                          work:"At work, Controller shows up as micromanaging, difficulty trusting teammates, frustration when things go off-plan, and a tendency to take over rather than collaborate.",                                                                                                  signs:["Struggles to hand off tasks","Frustrated when direction isn't followed","Takes over when things feel uncertain","Difficulty sitting with ambiguity","Can come across as domineering","Needs to know every detail"],                           gift:"Decisive, action-oriented, excellent in high-pressure situations" },
+  hyperAchiever: { name:"Hyper-Achiever",   emoji:"🏆",  desc:"Dependent on constant performance and achievement for self-worth. Self-esteem is tied to the last result, not internal value.",                                                                                                                     work:"At work, Hyper-Achiever shows up as difficulty resting, guilt during slow periods, overworking, comparing output to others, and struggling to disconnect from work identity.",                                                                                             signs:["Self-worth rises and falls with results","Guilt when not producing","Compares own output to teammates","Difficulty celebrating 'enough'","Overcommits to prove value","Struggles to ask for help"],                                         gift:"High drive, ambition, strong results-orientation" },
+  hyperRational: { name:"Hyper-Rational",   emoji:"🔬",  desc:"Overreliance on logic and analysis — to the point of dismissing or minimizing emotions in themselves and others.",                                                                                                                                 work:"At work, Hyper-Rational shows up as seeming cold or detached, dismissing team morale concerns, prioritizing efficiency over connection, and struggling with empathy in conflict.",                                                                                         signs:["Dismisses emotional concerns as unimportant","Seen as cold or disconnected","Frustrated by 'irrational' behavior","Skips the human side of decisions","Struggles with ambiguous or people-centered problems","Difficulty showing vulnerability"], gift:"Clear-headed thinking, objectivity, analytical precision" },
+  hyperVigilant: { name:"Hyper-Vigilant",   emoji:"👁️", desc:"Persistent anxiety about what could go wrong. Always scanning for danger, risk, or failure — even when things are going well.",                                                                                                                    work:"At work, Hyper-Vigilant shows up as over-preparing, catastrophizing, difficulty relaxing into good news, and slowing down decisions with excessive risk analysis.",                                                                                                        signs:["Anticipates worst-case scenarios constantly","Difficulty trusting that things are actually okay","Over-prepares for every situation","Second-guesses decisions after the fact","Feels responsible for preventing all bad outcomes","Struggle to enjoy success before moving to the next worry"], gift:"Thorough preparation, risk awareness, anticipates problems early" },
+  pleaser:       { name:"Pleaser",           emoji:"🤝",  desc:"Gains acceptance and love by focusing on helping, pleasing, and flattering others — often at the expense of their own needs.",                                                                                                                     work:"At work, Pleaser shows up as difficulty saying no, over-helping to the point of burnout, avoiding feedback that might disappoint, and needing approval to feel secure.",                                                                                                   signs:["Says yes when they mean no","Struggles to set limits with colleagues","Over-invests in others' happiness","Needs approval to feel valued","Avoids disappointing others at all costs","Takes on too much to seem helpful"],                    gift:"Empathetic, generous, deeply collaborative" },
+  restless:      { name:"Restless",          emoji:"⚡",  desc:"Constantly seeking the next exciting thing — rarely at peace with the present. Novelty is safety; stillness feels like stagnation.",                                                                                                               work:"At work, Restless shows up as losing interest in projects mid-way, jumping to new ideas before finishing current ones, difficulty with routine, and being hard to pin down.",                                                                                              signs:["Moves quickly from one project to the next","Bored by repetitive or routine work","Starts things more easily than finishing them","Needs constant stimulation to stay engaged","Can seem scattered or uncommitted","Struggles with long, slow-burn initiatives"], gift:"High energy, creative curiosity, thrives in fast-moving environments" },
+  stickler:      { name:"Stickler",          emoji:"📐",  desc:"Perfectionism and an intense need for order and structure. Turns everything into a 'should' or 'must' — for themselves and others.",                                                                                                               work:"At work, Stickler shows up as difficulty letting go of details, frustration with messy processes, holding others to rigid standards, and getting stuck in 'perfect' rather than 'done'.",                                                                                  signs:["Difficulty letting 'good enough' be enough","Strong frustration with disorder","High standards that extend to teammates","Gets stuck refining rather than finishing","Finds it hard to delegate to a different process","Can slow teams down with over-editing"], gift:"Reliable, precise, sets the bar for quality" },
+  victim:        { name:"Victim",            emoji:"🫂",  desc:"Uses emotional intensity and a sense of being wronged to gain attention, connection, or sympathy — often without realizing it.",                                                                                                                   work:"At work, Victim shows up as feeling overlooked or unappreciated, taking feedback personally, building resentment quietly, and sometimes using struggle to connect with others.",                                                                                           signs:["Feels effort often goes unrecognized","Takes criticism personally","Builds quiet resentment over time","Uses stress or hardship to bond with others","Difficulty separating identity from setbacks","Can feel like the team doesn't understand their contribution"], gift:"Deep emotional sensitivity, strong sense of fairness and injustice" },
 };
 
 const QUESTIONS = [
-  {id:"q1", text:"I often notice what's wrong before I notice what's right.", sab:"judge", w:2},
-  {id:"q2", text:"I tend to avoid difficult conversations until I absolutely have to.", sab:"avoider", w:2},
-  {id:"q3", text:"I find it hard to trust others to do things the way they should be done.", sab:"controller", w:2},
-  {id:"q4", text:"My sense of worth is deeply tied to what I accomplish.", sab:"hyperAchiever", w:2},
-  {id:"q5", text:"I prefer to analyze problems logically rather than talk about feelings.", sab:"hyperRational", w:2},
-  {id:"q6", text:"Even when things are going well, I find myself looking for what could go wrong.", sab:"hyperVigilant", w:2},
-  {id:"q7", text:"I often put others' needs ahead of my own — sometimes to my detriment.", sab:"pleaser", w:2},
-  {id:"q8", text:"I get bored easily and am always looking for the next exciting thing.", sab:"restless", w:2},
-  {id:"q9", text:"I have strong standards for how things should be done and notice when they aren't met.", sab:"stickler", w:2},
-  {id:"q10",text:"I sometimes feel my efforts go unrecognized, which really bothers me.", sab:"victim", w:2},
-  {id:"q11",text:"I replay past mistakes and beat myself up about them.", sab:"judge", w:1},
-  {id:"q12",text:"I often say yes when I really want to say no.", sab:"pleaser", w:1},
-  {id:"q13",text:"I struggle to hand things off because I worry they won't be done right.", sab:"controller", w:1},
-  {id:"q14",text:"I jump from one project or idea to the next without finishing things.", sab:"restless", w:1},
-  {id:"q15",text:"When I'm not being productive, I feel guilty.", sab:"hyperAchiever", w:1},
-  {id:"q16",text:"I judge others' mistakes as harshly as my own.", sab:"judge", w:1},
-  {id:"q17",text:"I sometimes over-prepare just to feel safe.", sab:"hyperVigilant", w:1},
-  {id:"q18",text:"I suppress or minimize my own emotions in professional settings.", sab:"hyperRational", w:1},
-  {id:"q19",text:"I hold myself (and sometimes others) to exacting standards.", sab:"stickler", w:1},
-  {id:"q20",text:"I focus on the positive to avoid dealing with something difficult.", sab:"avoider", w:1},
+  {id:"q1", text:"I often notice what's wrong before I notice what's right.",                            sab:"judge",         w:2},
+  {id:"q2", text:"I tend to avoid difficult conversations until I absolutely have to.",                  sab:"avoider",       w:2},
+  {id:"q3", text:"I find it hard to trust others to do things the way they should be done.",            sab:"controller",    w:2},
+  {id:"q4", text:"My sense of worth is deeply tied to what I accomplish.",                              sab:"hyperAchiever", w:2},
+  {id:"q5", text:"I prefer to analyze problems logically rather than talk about feelings.",             sab:"hyperRational", w:2},
+  {id:"q6", text:"Even when things are going well, I find myself looking for what could go wrong.",     sab:"hyperVigilant", w:2},
+  {id:"q7", text:"I often put others' needs ahead of my own — sometimes to my detriment.",             sab:"pleaser",       w:2},
+  {id:"q8", text:"I get bored easily and am always looking for the next exciting thing.",              sab:"restless",      w:2},
+  {id:"q9", text:"I have strong standards for how things should be done and notice when they aren't.", sab:"stickler",      w:2},
+  {id:"q10",text:"I sometimes feel my efforts go unrecognized, which really bothers me.",              sab:"victim",        w:2},
+  {id:"q11",text:"I replay past mistakes and beat myself up about them.",                              sab:"judge",         w:1},
+  {id:"q12",text:"I often say yes when I really want to say no.",                                      sab:"pleaser",       w:1},
+  {id:"q13",text:"I struggle to hand things off because I worry they won't be done right.",            sab:"controller",    w:1},
+  {id:"q14",text:"I jump from one project or idea to the next without finishing things.",              sab:"restless",      w:1},
+  {id:"q15",text:"When I'm not being productive, I feel guilty.",                                      sab:"hyperAchiever", w:1},
+  {id:"q16",text:"I judge others' mistakes as harshly as my own.",                                     sab:"judge",         w:1},
+  {id:"q17",text:"I sometimes over-prepare just to feel safe.",                                        sab:"hyperVigilant", w:1},
+  {id:"q18",text:"I suppress or minimize my own emotions in professional settings.",                   sab:"hyperRational", w:1},
+  {id:"q19",text:"I hold myself (and sometimes others) to exacting standards.",                        sab:"stickler",      w:1},
+  {id:"q20",text:"I focus on the positive to avoid dealing with something difficult.",                 sab:"avoider",       w:1},
 ];
 
 function maxScore(k){return QUESTIONS.filter(q=>q.sab===k).reduce((s,q)=>s+q.w*5,0);}
 function pct(score,k){return Math.round((score/maxScore(k))*100);}
-function computeScores(ans){
-  const s={};Object.keys(SABOTEURS).forEach(k=>s[k]=0);
-  QUESTIONS.forEach(q=>{if(ans[q.id])s[q.sab]+=ans[q.id]*q.w;});
-  return s;
-}
+function computeScores(ans){const s={};Object.keys(SABOTEURS).forEach(k=>s[k]=0);QUESTIONS.forEach(q=>{if(ans[q.id])s[q.sab]+=ans[q.id]*q.w;});return s;}
 function getTop(scores,n=3){return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k);}
 
 function Btn({children,onClick,primary,disabled,style={}}){
-  return(
-    <button onClick={onClick} disabled={disabled} style={{
-      fontFamily:sans,fontSize:13,padding:"8px 18px",borderRadius:4,cursor:disabled?"default":"pointer",
-      background:primary?(disabled?"#9A9690":B.chartreuse):"transparent",
-      border:`1px solid ${primary?(disabled?B.border:B.emerald):B.border}`,
-      color:primary?(disabled?"#C8C4C0":"#FFFFFF"):B.night,
-      opacity:disabled?0.6:1,...style
-    }}>{children}</button>
-  );
+  return(<button onClick={onClick} disabled={disabled} style={{fontFamily:sans,fontSize:13,padding:"8px 18px",borderRadius:4,cursor:disabled?"default":"pointer",background:primary?(disabled?"#9A9690":B.chartreuse):"transparent",border:`1px solid ${primary?(disabled?B.border:B.emerald):B.border}`,color:primary?(disabled?"#C8C4C0":"#FFFFFF"):B.night,opacity:disabled?0.6:1,...style}}>{children}</button>);
 }
 
 function ElevateFooter(){
@@ -193,22 +96,11 @@ function ElevateFooter(){
 }
 
 function TabBar({active,set,weatherCount,sabCount}){
-  const tabs=[
-    {id:"welcome",      label:"Welcome"},
-    {id:"guide",        label:"Saboteur guide"},
-    {id:"saboteurs",    label:"Saboteurs",   badge:sabCount>0?`${sabCount}/${MEMBERS.length}`:null},
-    {id:"weather",      label:"Weather map", badge:weatherCount>0?`${weatherCount}/${MEMBERS.length}`:null},
-  ];
+  const tabs=[{id:"welcome",label:"Welcome"},{id:"guide",label:"Saboteur guide"},{id:"saboteurs",label:"Saboteurs",badge:sabCount>0?`${sabCount}/${MEMBERS.length}`:null},{id:"weather",label:"Weather map",badge:weatherCount>0?`${weatherCount}/${MEMBERS.length}`:null}];
   return(
-    <div style={{display:"flex",borderBottom:`2px solid ${B.border}`,marginBottom:"2rem",flexWrap:"wrap",gap:0}}>
+    <div style={{display:"flex",borderBottom:`2px solid ${B.border}`,marginBottom:"2rem",flexWrap:"wrap"}}>
       {tabs.map(t=>(
-        <button key={t.id} onClick={()=>set(t.id)} style={{
-          fontFamily:sans,fontSize:11,letterSpacing:"0.08em",textTransform:"uppercase",
-          padding:"0.65rem 1rem",background:"transparent",border:"none",
-          borderBottom:active===t.id?`2px solid ${B.emerald}`:"2px solid transparent",
-          color:active===t.id?B.emerald:B.seaSage,cursor:"pointer",marginBottom:-2,
-          display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap",
-        }}>
+        <button key={t.id} onClick={()=>set(t.id)} style={{fontFamily:sans,fontSize:11,letterSpacing:"0.08em",textTransform:"uppercase",padding:"0.65rem 1rem",background:"transparent",border:"none",borderBottom:active===t.id?`2px solid ${B.emerald}`:"2px solid transparent",color:active===t.id?B.emerald:B.seaSage,cursor:"pointer",marginBottom:-2,display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap"}}>
           {t.label}
           {t.badge&&<span style={{fontSize:10,background:B.surface,border:`1px solid ${B.border}`,color:B.sage,borderRadius:10,padding:"1px 6px"}}>{t.badge}</span>}
         </button>
@@ -217,22 +109,18 @@ function TabBar({active,set,weatherCount,sabCount}){
   );
 }
 
-// ── TAB 1: WELCOME ────────────────────────────────────────────────────────────
 function WelcomeTab({setTab}){
   const steps=[
-    {n:"1",tab:"guide",  icon:"📖", label:"Read the Saboteur guide",    desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
+    {n:"1",tab:"guide",    icon:"📖",label:"Read the Saboteur guide",    desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
     {n:"2",tab:"saboteurs",icon:"🧠",label:"Take the Saboteur assessment",desc:"20 questions, ~3 minutes. You'll get your top 3 saboteurs and a deeper breakdown of each one."},
-    {n:"3",tab:"weather",icon:"🌤️", label:"Fill out your Weather Map",   desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help."},
-    {n:"4",tab:null,     icon:"🌈", label:"Reveal & discuss as a team",  desc:"Once everyone's done, we'll go through each person's forecast together. The app guides the conversation — no one has to play host."},
+    {n:"3",tab:"weather",  icon:"🌤️",label:"Fill out your Weather Map",  desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help."},
+    {n:"4",tab:null,       icon:"🌈",label:"Reveal & discuss as a team", desc:"Once everyone's done, we'll go through each person's forecast together. The app guides the conversation — no one has to play host."},
   ];
   return(
     <div style={{maxWidth:580,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Welcome<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>
-        This is a getting-to-know-you activity built around how we actually work — not a personality test, not a therapy session. You describe your own experience, and we learn how to show up better for each other.
-      </p>
-
+      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>This is a getting-to-know-you activity built around how we actually work — not a personality test, not a therapy session. You describe your own experience, and we learn how to show up better for each other.</p>
       <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"1rem"}}>How to navigate this</p>
       <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:"2.5rem"}}>
         {steps.map(s=>(
@@ -245,57 +133,39 @@ function WelcomeTab({setTab}){
           </div>
         ))}
       </div>
-
       <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"1rem"}}>What happens after everyone submits</p>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:"2rem"}}>
-        {[
-          {icon:"👥", text:"Reveal screen — we go through each person's forecast one at a time, with a discussion prompt for the group."},
-          {icon:"📋", text:"Collective report — everyone's responses side by side, so you can see patterns across the team."},
-          {icon:"✦",  text:"AI wrap-up — a generated 'Team Weather Report' script that summarizes our collective strengths, stress signals, and commitments to each other."},
-          {icon:"💾", text:"Saved to Airtable — all responses are stored as you go, so nothing is lost if you close the tab."},
-        ].map((item,i)=>(
+        {[{icon:"👥",text:"Reveal screen — we go through each person's forecast one at a time, with a discussion prompt for the group."},{icon:"📋",text:"Collective report — everyone's responses side by side, so you can see patterns across the team."},{icon:"✦",text:"AI wrap-up — a generated Team Weather Report script that summarizes our collective strengths, stress signals, and commitments."},{icon:"💾",text:"Saved to Notion — all responses are stored as you go, so nothing is lost if you close the tab."}].map((item,i)=>(
           <div key={i} style={{display:"flex",gap:12,padding:"0.875rem 1rem",background:B.surface,borderRadius:6}}>
             <span style={{fontSize:16,flexShrink:0}}>{item.icon}</span>
             <p style={{fontSize:12,color:B.night,opacity:0.75,lineHeight:1.65,margin:0}}>{item.text}</p>
           </div>
         ))}
       </div>
-
       <div style={{background:"#F0F7F0",border:`1px solid #B8D4B8`,borderRadius:8,padding:"1rem 1.25rem",marginBottom:"1rem"}}>
-        <p style={{fontSize:12,color:B.emerald,lineHeight:1.7,margin:0}}>
-          <strong style={{fontWeight:500}}>A note on privacy:</strong> Everything you share is yours. The goal is to help the team understand each other better — not to put anyone in a box. There are no right or wrong answers.
-        </p>
+        <p style={{fontSize:12,color:B.emerald,lineHeight:1.7,margin:0}}><strong style={{fontWeight:500}}>A note on privacy:</strong> Everything you share is yours. The goal is to help the team understand each other better — not to put anyone in a box. There are no right or wrong answers.</p>
       </div>
-
       <Btn primary onClick={()=>setTab("guide")} style={{width:"100%",marginTop:"0.5rem"}}>Start with the Saboteur guide →</Btn>
       <ElevateFooter/>
     </div>
   );
 }
 
-// ── TAB 2: SABOTEUR GUIDE ─────────────────────────────────────────────────────
 function GuideTab({setTab}){
   const[open,setOpen]=useState(null);
-  const keys=Object.keys(SABOTEURS);
   return(
     <div style={{maxWidth:620,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Reference</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Saboteur field guide<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>
-        We all have inner critics — mental patterns that show up under stress and get in our way. These are the 10 saboteur types. Read through before taking the assessment. Tap any card to learn more.
-      </p>
+      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>We all have inner critics — mental patterns that show up under stress and get in our way. These are the 10 saboteur types. Read through before taking the assessment. Tap any card to learn more.</p>
       <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:"2rem"}}>
-        {keys.map(k=>{
-          const s=SABOTEURS[k];
-          const isOpen=open===k;
+        {Object.keys(SABOTEURS).map(k=>{
+          const s=SABOTEURS[k];const isOpen=open===k;
           return(
-            <div key={k} style={{background:"#FFFFFF",border:`1px solid ${isOpen?B.emerald:B.border}`,borderRadius:8,overflow:"hidden",transition:"border 0.2s"}}>
+            <div key={k} style={{background:"#FFFFFF",border:`1px solid ${isOpen?B.emerald:B.border}`,borderRadius:8,overflow:"hidden"}}>
               <button onClick={()=>setOpen(isOpen?null:k)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0.875rem 1rem",background:"transparent",border:"none",cursor:"pointer",textAlign:"left"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <span style={{fontSize:18}}>{s.emoji}</span>
-                  <span style={{fontFamily:serif,fontSize:15,color:B.sage,fontWeight:400}}>{s.name}</span>
-                </div>
-                <span style={{fontSize:12,color:B.seaSage,transition:"transform 0.2s",display:"inline-block",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}}>▾</span>
+                <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:18}}>{s.emoji}</span><span style={{fontFamily:serif,fontSize:15,color:B.sage,fontWeight:400}}>{s.name}</span></div>
+                <span style={{fontSize:12,color:B.seaSage,display:"inline-block",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}}>▾</span>
               </button>
               {isOpen&&(
                 <div style={{padding:"0 1rem 1.25rem",borderTop:`1px solid ${B.border}`}}>
@@ -306,9 +176,7 @@ function GuideTab({setTab}){
                   </div>
                   <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,margin:"0 0 6px"}}>Signs it's active</p>
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,marginBottom:"0.875rem"}}>
-                    {s.signs.map((sign,i)=>(
-                      <p key={i} style={{fontSize:12,color:B.night,opacity:0.75,margin:0,lineHeight:1.5}}>· {sign}</p>
-                    ))}
+                    {s.signs.map((sign,i)=><p key={i} style={{fontSize:12,color:B.night,opacity:0.75,margin:0,lineHeight:1.5}}>· {sign}</p>)}
                   </div>
                   <div style={{borderTop:`1px solid ${B.border}`,paddingTop:"0.75rem"}}>
                     <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,margin:"0 0 4px"}}>The hidden gift</p>
@@ -326,7 +194,6 @@ function GuideTab({setTab}){
   );
 }
 
-// ── TAB 3: SABOTEURS ──────────────────────────────────────────────────────────
 function SaboteursTab({sabResults,setSabResults,setTab}){
   const[phase,setPhase]=useState("intro");
   const[name,setName]=useState("");
@@ -337,20 +204,13 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
   const submittedNames=Object.keys(sabResults);
 
   async function handleAnswer(val){
-    const q=QUESTIONS[currentQ];
-    const newAns={...answers,[q.id]:val};
-    setAnswers(newAns);
-    if(currentQ<QUESTIONS.length-1){
-      setCurrentQ(currentQ+1);
-    } else {
-      const scores=computeScores(newAns);
-      const top=getTop(scores);
-      try{
-        await fetch("/.netlify/functions/save-saboteurs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,top,scores})});
-      }catch(e){console.error("Airtable save failed",e);}
-      setSabResults(prev=>({...prev,[name]:{top,scores}}));
-      setSelectedSab(top[0]);
-      setPhase("results");
+    const q=QUESTIONS[currentQ];const newAns={...answers,[q.id]:val};setAnswers(newAns);
+    if(currentQ<QUESTIONS.length-1){setCurrentQ(currentQ+1);}
+    else{
+      const scores=computeScores(newAns);const top=getTop(scores);
+      try{await fetch("/.netlify/functions/save-saboteurs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,top,scores})});}
+      catch(e){console.error("Save failed",e);}
+      setSabResults(prev=>({...prev,[name]:{top,scores}}));setSelectedSab(top[0]);setPhase("results");
     }
   }
 
@@ -360,7 +220,6 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
     const teamTop=Object.entries(sabCounts).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
     return(
       <div style={{maxWidth:680,margin:"0 auto",fontFamily:sans}}>
-        <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.seaSage,marginBottom:4}}>{submittedNames.length} members completed</p>
         <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"1.5rem"}}>Team saboteur summary</h2>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12,marginBottom:"2rem"}}>
           {submittedNames.map(n=>(
@@ -400,11 +259,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Saboteurs assessment<span style={{color:B.emerald}}>.</span></h2>
       <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.75rem"}}>20 questions · ~3 minutes · Discover your top inner critics and how they show up at work.</p>
-      <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>
-        Not sure what a saboteur is? Check out the{" "}
-        <button onClick={()=>setTab("guide")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteur guide</button>
-        {" "}first.
-      </p>
+      <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>Not sure what a saboteur is? Check out the <button onClick={()=>setTab("guide")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteur guide</button> first.</p>
       <label style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,display:"block",marginBottom:8}}>Your name</label>
       <select defaultValue="" onChange={e=>setName(e.target.value)} style={{width:"100%",marginBottom:"1rem",fontSize:14,background:"#FFFFFF",color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"9px 10px"}}>
         <option value="">Select your name…</option>
@@ -430,8 +285,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
   );
 
   if(phase==="quiz"){
-    const q=QUESTIONS[currentQ];
-    const prog=Math.round((currentQ/QUESTIONS.length)*100);
+    const q=QUESTIONS[currentQ];const prog=Math.round((currentQ/QUESTIONS.length)*100);
     return(
       <div style={{maxWidth:480,margin:"0 auto",fontFamily:sans}}>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:"1.5rem"}}>
@@ -457,19 +311,13 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
 
   if(phase==="results"){
     const myResult=sabResults[name];
-    const sorted=Object.entries(myResult.scores).sort((a,b)=>{
-      const pctA=pct(a[1],a[0]);
-      const pctB=pct(b[1],b[0]);
-      if(pctB!==pctA) return pctB-pctA;
-      return b[1]-a[1];
-    });
-    const sKey=selectedSab||myResult.top[0];
-    const sab=SABOTEURS[sKey];
+    const sorted=Object.entries(myResult.scores).sort((a,b)=>{const pA=pct(a[1],a[0]);const pB=pct(b[1],b[0]);if(pB!==pA)return pB-pA;return b[1]-a[1];});
+    const sKey=selectedSab||myResult.top[0];const sab=SABOTEURS[sKey];
     return(
       <div style={{maxWidth:560,margin:"0 auto",fontFamily:sans}}>
         <p style={{fontSize:11,color:B.seaSage,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{name}'s results</p>
         <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Your top saboteurs</h2>
-        <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved to Airtable</p>
+        <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved</p>
         <div style={{display:"flex",gap:8,marginBottom:"1.5rem",flexWrap:"wrap"}}>
           {myResult.top.map((k,i)=>(
             <button key={k} onClick={()=>setSelectedSab(k)} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:sKey===k?(i===0?B.chartreuse:B.emerald):i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":sKey===k?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`,cursor:"pointer",fontFamily:sans,fontWeight:sKey===k?500:400}}>
@@ -512,11 +360,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         </div>
         <div style={{background:B.surface,border:`1px solid ${B.border}`,borderRadius:8,padding:"1rem",marginBottom:"1.5rem"}}>
           <p style={{fontSize:11,color:B.sage,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Next step</p>
-          <p style={{fontSize:13,color:B.night,opacity:0.8,lineHeight:1.7,margin:0}}>
-            Head to the{" "}
-            <button onClick={()=>setTab("weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans}}>Weather Map</button>
-            {" "}tab and fill out your four zones. Use what you learned here — especially for the Stormy zone.
-          </p>
+          <p style={{fontSize:13,color:B.night,opacity:0.8,lineHeight:1.7,margin:0}}>Head to the <button onClick={()=>setTab("weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans}}>Weather Map</button> tab and fill out your four zones. Use what you learned here — especially for the Stormy zone.</p>
         </div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
           <Btn onClick={()=>{setPhase("intro");setAnswers({});setCurrentQ(0);setName("");}}>Take again</Btn>
@@ -528,33 +372,24 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
   }
 }
 
-// ── TAB 4: WEATHER MAP ────────────────────────────────────────────────────────
 function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
   const[phase,setPhase]=useState("intro");
   const[currentName,setCurrentName]=useState("");
   const[weatherReport,setWeatherReport]=useState(null);
   const[generating,setGenerating]=useState(false);
   const names=Object.keys(submissions);
-  const validName = currentName && currentName !== "";
 
   async function handleSubmit(name,responses){
-    try{
-      await fetch("/.netlify/functions/save-weather-map",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,...responses})});
-    }catch(e){console.error("Airtable save failed",e);}
-    setSubmissions(s=>({...s,[name]:{...responses}}));
-    setPhase("waiting");
+    try{await fetch("/.netlify/functions/save-weather-map",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,...responses})});}
+    catch(e){console.error("Save failed",e);}
+    setSubmissions(s=>({...s,[name]:{...responses}}));setPhase("waiting");
   }
 
   async function generateReport(){
     setGenerating(true);
-    const summaries=Object.entries(submissions).map(([name,data])=>
-      `${name}:\n  ☀️ Sunny: ${data.sunny}\n  ☁️ Overcast: ${data.overcast}\n  ⛈️ Stormy: ${data.stormy}\n  🌈 Clear-up: ${data.clearup}`
-    ).join("\n\n");
-    try{
-      const res=await fetch("/.netlify/functions/generate-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({summaries})});
-      const data=await res.json();
-      setWeatherReport(data.text);
-    }catch(e){setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");}
+    const summaries=Object.entries(submissions).map(([n,d])=>`${n}:\n  ☀️ Sunny: ${d.sunny}\n  ☁️ Overcast: ${d.overcast}\n  ⛈️ Stormy: ${d.stormy}\n  🌈 Clear-up: ${d.clearup}`).join("\n\n");
+    try{const res=await fetch("/.netlify/functions/generate-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({summaries})});const data=await res.json();setWeatherReport(data.text);}
+    catch(e){setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");}
     setGenerating(false);
   }
 
@@ -563,11 +398,7 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Team Weather Map<span style={{color:B.emerald}}>.</span></h2>
       <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Fill out your four zones privately — then reveal and discuss as a group.</p>
-      <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>
-        Tip: Complete the{" "}
-        <button onClick={()=>setTab("saboteurs")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteurs assessment</button>
-        {" "}first — it gives you helpful vocabulary for the Stormy zone.
-      </p>
+      <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>Tip: Complete the <button onClick={()=>setTab("saboteurs")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteurs assessment</button> first — it gives you helpful vocabulary for the Stormy zone.</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:"2rem"}}>
         {ZONES.map(z=>(
           <div key={z.id} style={{background:z.bg,border:`0.5px solid ${z.border}`,borderRadius:8,padding:"0.875rem"}}>
@@ -599,7 +430,7 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
       <h2 style={{fontFamily:serif,fontSize:"1.5rem",fontWeight:400,color:B.sage,marginBottom:"0.75rem"}}>Forecast saved, {currentName}.</h2>
       <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.5rem"}}>{names.length} of {MEMBERS.length} in so far.</p>
       <p style={{fontSize:12,color:B.seaSage,marginBottom:"0.5rem"}}>{names.join(" · ")}</p>
-      <p style={{fontSize:12,color:B.chartreuse,marginBottom:"2rem"}}>✓ Saved to Airtable — safe even if you close this tab.</p>
+      <p style={{fontSize:12,color:B.chartreuse,marginBottom:"2rem"}}>✓ Saved — safe even if you close this tab.</p>
       <div style={{display:"flex",gap:10,justifyContent:"center"}}>
         <Btn onClick={()=>setPhase("intro")}>← Home</Btn>
         {names.length>=2&&<Btn primary onClick={()=>setPhase("reveal")}>Start reveal →</Btn>}
@@ -615,10 +446,8 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
 function FillScreen({name,onSubmit,onBack}){
   const[responses,setResponses]=useState({sunny:"",overcast:"",stormy:"",clearup:""});
   const[active,setActive]=useState("sunny");
-  const zone=ZONES.find(z=>z.id===active);
-  const zoneIdx=ZONES.findIndex(z=>z.id===active);
-  const filledCount=ZONES.filter(z=>responses[z.id].trim()).length;
-  const allFilled=filledCount===ZONES.length;
+  const zone=ZONES.find(z=>z.id===active);const zoneIdx=ZONES.findIndex(z=>z.id===active);
+  const filledCount=ZONES.filter(z=>responses[z.id].trim()).length;const allFilled=filledCount===ZONES.length;
   return(
     <div style={{maxWidth:560,margin:"0 auto",fontFamily:sans}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1.5rem"}}>
@@ -626,15 +455,11 @@ function FillScreen({name,onSubmit,onBack}){
         <button onClick={onBack} style={{fontSize:11,color:B.seaSage,background:"transparent",border:"none",cursor:"pointer"}}>← back</button>
       </div>
       <div style={{display:"flex",gap:6,marginBottom:"1.5rem",flexWrap:"wrap"}}>
-        {ZONES.map(z=>{
-          const done=responses[z.id].trim().length>0;
-          const isActive=active===z.id;
-          return(
-            <button key={z.id} onClick={()=>setActive(z.id)} style={{fontFamily:sans,fontSize:12,padding:"5px 14px",borderRadius:20,cursor:"pointer",fontWeight:isActive?500:400,transition:"all 0.15s",background:isActive?z.pill.bg:done?z.pill.bg+"44":"#E8E4E0",border:`1.5px solid ${isActive?z.pill.border:done?z.pill.border+"88":B.border}`,color:isActive?z.pill.text:done?"#444":"#888"}}>
-              {z.icon} {z.label}{done?" ✓":""}
-            </button>
-          );
-        })}
+        {ZONES.map(z=>{const done=responses[z.id].trim().length>0;const isActive=active===z.id;return(
+          <button key={z.id} onClick={()=>setActive(z.id)} style={{fontFamily:sans,fontSize:12,padding:"5px 14px",borderRadius:20,cursor:"pointer",fontWeight:isActive?500:400,transition:"all 0.15s",background:isActive?z.pill.bg:done?z.pill.bg+"44":"#E8E4E0",border:`1.5px solid ${isActive?z.pill.border:done?z.pill.border+"88":B.border}`,color:isActive?z.pill.text:done?"#444":"#888"}}>
+            {z.icon} {z.label}{done?" ✓":""}
+          </button>
+        );})}
       </div>
       <div style={{background:zone.bg,border:`0.5px solid ${zone.border}`,borderRadius:10,padding:"1.5rem",marginBottom:"1.25rem"}}>
         <div style={{fontSize:22,marginBottom:"0.5rem"}}>{zone.icon}</div>
@@ -657,11 +482,8 @@ function FillScreen({name,onSubmit,onBack}){
 }
 
 function RevealScreen({submissions,onHome,onReport}){
-  const names=Object.keys(submissions);
-  const[idx,setIdx]=useState(0);
-  const person=names[idx];
-  const data=submissions[person];
-  const prompt=DISCUSS[idx%DISCUSS.length](person);
+  const names=Object.keys(submissions);const[idx,setIdx]=useState(0);
+  const person=names[idx];const data=submissions[person];const prompt=DISCUSS[idx%DISCUSS.length](person);
   return(
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"1.5rem"}}>
@@ -700,15 +522,12 @@ function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerat
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.4rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Our collective forecast<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's climate, side by side. All responses are saved to Airtable.</p>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's climate, side by side.</p>
       {ZONES.map(z=>(
         <div key={z.id} style={{marginBottom:"2rem"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,paddingBottom:10,borderBottom:`1px solid ${B.border}`}}>
             <span style={{fontSize:18}}>{z.icon}</span>
-            <div>
-              <div style={{fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage}}>{z.label}</div>
-              <div style={{fontSize:12,color:B.night,opacity:0.6}}>{z.title}</div>
-            </div>
+            <div><div style={{fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage}}>{z.label}</div><div style={{fontSize:12,color:B.night,opacity:0.6}}>{z.title}</div></div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:8}}>
             {names.map(n=>(
@@ -739,7 +558,6 @@ function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerat
   );
 }
 
-// ── ROOT ──────────────────────────────────────────────────────────────────────
 export default function App(){
   const[tab,setTab]=useState("welcome");
   const[submissions,setSubmissions]=useState({});
@@ -750,26 +568,14 @@ export default function App(){
     fetch("/.netlify/functions/get-submissions")
       .then(r=>r.json())
       .then(data=>{
-        if(data.submissions){
-          const clean={};
-          Object.entries(data.submissions).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});
-          setSubmissions(clean);
-        }
-        if(data.sabResults){
-          const clean={};
-          Object.entries(data.sabResults).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});
-          setSabResults(clean);
-        }
+        if(data.submissions){const clean={};Object.entries(data.submissions).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});setSubmissions(clean);}
+        if(data.sabResults){const clean={};Object.entries(data.sabResults).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});setSabResults(clean);}
       })
-      .catch(e=>console.error("Could not load from Airtable",e))
+      .catch(e=>console.error("Could not load",e))
       .finally(()=>setLoading(false));
   },[]);
 
-  if(loading)return(
-    <div style={{background:B.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
-      <p style={{fontFamily:sans,fontSize:13,color:B.seaSage}}>Loading…</p>
-    </div>
-  );
+  if(loading)return(<div style={{background:B.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><p style={{fontFamily:sans,fontSize:13,color:B.seaSage}}>Loading…</p></div>);
 
   return(
     <div style={{background:B.bg,minHeight:"100vh",padding:"2rem 1.5rem",color:B.night}}>
