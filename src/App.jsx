@@ -125,42 +125,29 @@ function WelcomeTab({setTab}){
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Welcome<span style={{color:B.emerald}}>.</span></h2>
       <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>This is a getting-to-know-you activity built around how we actually work — not a personality test, not a therapy session. You describe your own experience, and we learn how to show up better for each other.</p>
 
-      {/* Before */}
-      <div style={{marginBottom:"1.5rem"}}>
-        <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"0.75rem"}}>Before the offsite</p>
-        <div style={{background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,padding:"1rem 1.25rem"}}>
-          <p style={{fontSize:13,color:B.night,lineHeight:1.8,margin:0,opacity:0.8}}>
-            Review the <button onClick={()=>setTab("guide")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans}}>Saboteur guide</button> for a shared understanding, then complete the assessment and Weather Map on your own time (about 20 minutes total). Your Saboteur results will be emailed to you for future reference — you can also view them within the assessment tab during your current session. Your Weather Map responses will stay visible on your results screen during your session. Your responses will be saved to our Experience Team Forecast page — a living record we can revisit as our team grows, changes, or simply wants to check in on where we're all at.
-          </p>
-        </div>
-      </div>
-
-      {/* During */}
-      <div style={{marginBottom:"1.5rem"}}>
-        <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"0.75rem"}}>During the offsite</p>
-        <div style={{background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,padding:"1rem 1.25rem"}}>
-          <p style={{fontSize:13,color:B.night,lineHeight:1.8,margin:0,opacity:0.8}}>
-            We'll review forecasts together — no additional prep needed.
-          </p>
-        </div>
-      </div>
-
-      {/* After / what happens */}
-      <div style={{marginBottom:"2rem"}}>
-        <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"0.75rem"}}>What happens during the reveal</p>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {[
-            {icon:"👥",text:"Reveal screen — we go through each person's forecast one at a time, with a discussion prompt for the group."},
-            {icon:"📋",text:"Collective report — everyone's responses side by side, so you can see patterns across the team."},
-            {icon:"✦", text:"AI wrap-up — a generated Team Weather Report script that summarizes our collective strengths, stress signals, and commitments."},
-            {icon:"💾",text:"Saved to Notion — all responses are stored as you go, so nothing is lost if you close the tab."},
-          ].map((item,i)=>(
-            <div key={i} style={{display:"flex",gap:12,padding:"0.875rem 1rem",background:B.surface,borderRadius:6}}>
-              <span style={{fontSize:16,flexShrink:0}}>{item.icon}</span>
-              <p style={{fontSize:12,color:B.night,opacity:0.75,lineHeight:1.65,margin:0}}>{item.text}</p>
+      {/* How to navigate */}
+      <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"0.75rem"}}>How to navigate this</p>
+      <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:"2rem"}}>
+        {[
+          {num:1, icon:"📖", label:"Read the Saboteur guide", cta:true,  desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
+          {num:2, icon:"🧠", label:"Take the Saboteur assessment", cta:true,  desc:"20 questions, ~5 minutes. Your results will be emailed to you and remain viewable within this tab during your session."},
+          {num:3, icon:"🌤️", label:"Fill out your Weather Map", cta:true,  desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help. Takes about 10–15 minutes."},
+          {num:4, icon:"🌈", label:"Reveal & discuss as a team", cta:false, desc:"During the offsite, we'll walk through everyone's forecast together. No prep needed on the day — just come ready to engage."},
+        ].map((item)=>(
+          <div key={item.num} style={{display:"flex",gap:14,padding:"0.875rem 1rem",background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,alignItems:"flex-start"}}>
+            <div style={{width:28,height:28,borderRadius:"50%",background:B.surface,border:`1px solid ${B.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:B.sage,flexShrink:0,marginTop:1}}>{item.num}</div>
+            <div>
+              <p style={{fontSize:13,fontWeight:500,color:B.night,margin:"0 0 4px"}}>
+                {item.icon}{" "}
+                {item.cta
+                  ? <button onClick={()=>setTab(item.num===1?"guide":item.num===2?"saboteurs":"weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans,fontWeight:500}}>{item.label} →</button>
+                  : <span>{item.label}</span>
+                }
+              </p>
+              <p style={{fontSize:12,color:B.night,opacity:0.7,lineHeight:1.65,margin:0}}>{item.desc}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       <div style={{background:"#F0F7F0",border:`1px solid #B8D4B8`,borderRadius:8,padding:"1rem 1.25rem",marginBottom:"1rem"}}>
