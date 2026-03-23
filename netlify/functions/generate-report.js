@@ -11,7 +11,7 @@ exports.handler = async (event) => {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-opus-4-5-20251001",
       max_tokens: 1000,
       messages: [{
         role: "user",
@@ -21,6 +21,14 @@ exports.handler = async (event) => {
   });
 
   const data = await response.json();
+  if (!data.content || !data.content[0]) {
+    console.error("Anthropic API error:", JSON.stringify(data));
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ text: "Couldn't generate the report — please try again." })
+    };
+  }
+
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
