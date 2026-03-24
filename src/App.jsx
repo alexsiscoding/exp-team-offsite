@@ -94,7 +94,6 @@ function TabBar({active,set,weatherCount,sabCount}){
     {id:"guide",label:"Saboteur Guide"},
     {id:"saboteurs",label:"Saboteurs",badge:sabCount>0?`${sabCount}/${MEMBERS.length}`:null},
     {id:"weather",label:"Weather Map",badge:weatherCount>0?`${weatherCount}/${MEMBERS.length}`:null},
-    {id:"meaning",label:"What This Means"},
     {id:"facilitator",label:"·",title:"Facilitator"},
   ];
   return(
