@@ -117,7 +117,7 @@ function TabBar({active,set,weatherCount,sabCount}){
   );
 }
 
-// ─── WELCOME TAB ────────────────────────────────────────────────────────────
+// ─── WELCOME TAB ─────────────────────────────────────────────────────────────
 function WelcomeTab({setTab}){
   return(
     <div style={{maxWidth:580,margin:"0 auto",fontFamily:sans}}>
@@ -125,22 +125,21 @@ function WelcomeTab({setTab}){
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Welcome<span style={{color:B.emerald}}>.</span></h2>
       <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"2rem",opacity:0.75}}>This is a getting-to-know-you activity built around how we actually work — not a personality test, not a therapy session. You describe your own experience, and we learn how to show up better for each other.</p>
 
-      {/* How to navigate */}
       <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage,marginBottom:"0.75rem"}}>How to navigate this</p>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:"2rem"}}>
         {[
-          {num:1, icon:"📖", label:"Read the Saboteur guide", cta:true,  desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
-          {num:2, icon:"🧠", label:"Take the Saboteur assessment", cta:true,  desc:"20 questions, ~5 minutes. Your results will be emailed to you and remain viewable within this tab during your session."},
-          {num:3, icon:"🌤️", label:"Fill out your Weather Map", cta:true,  desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help. Takes about 10–15 minutes."},
-          {num:4, icon:"🌈", label:"Reveal & discuss as a team", cta:false, desc:"During the offsite, we'll walk through everyone's forecast together. No prep needed on the day — just come ready to engage."},
+          {num:1, icon:"📖", label:"Read the Saboteur guide", tab:"guide",      desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
+          {num:2, icon:"🧠", label:"Take the Saboteur assessment", tab:"saboteurs", desc:"20 questions, ~5 minutes. Your results will be shared with the session facilitator."},
+          {num:3, icon:"🌤️", label:"Fill out your Weather Map", tab:"weather",   desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help. Takes about 10–15 minutes."},
+          {num:4, icon:"🌈", label:"Reveal & discuss as a team", tab:null,       desc:"During the session, your facilitator will walk through everyone's forecast together. No prep needed on the day — just come ready to engage."},
         ].map((item)=>(
           <div key={item.num} style={{display:"flex",gap:14,padding:"0.875rem 1rem",background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,alignItems:"flex-start"}}>
             <div style={{width:28,height:28,borderRadius:"50%",background:B.surface,border:`1px solid ${B.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:B.sage,flexShrink:0,marginTop:1}}>{item.num}</div>
             <div>
               <p style={{fontSize:13,fontWeight:500,color:B.night,margin:"0 0 4px"}}>
                 {item.icon}{" "}
-                {item.cta
-                  ? <button onClick={()=>setTab(item.num===1?"guide":item.num===2?"saboteurs":"weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans,fontWeight:500}}>{item.label} →</button>
+                {item.tab
+                  ? <button onClick={()=>setTab(item.tab)} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans,fontWeight:500}}>{item.label} →</button>
                   : <span>{item.label}</span>
                 }
               </p>
@@ -211,6 +210,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
   const[currentQ,setCurrentQ]=useState(0);
   const[selectedSab,setSelectedSab]=useState(null);
   const[viewTeam,setViewTeam]=useState(false);
+  const[submitStatus,setSubmitStatus]=useState(null); // null | "sending" | "ok" | "err"
   const submittedNames=Object.keys(sabResults);
 
   async function handleAnswer(val){
@@ -218,8 +218,14 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
     if(currentQ<QUESTIONS.length-1){setCurrentQ(currentQ+1);}
     else{
       const scores=computeScores(newAns);const top=getTop(scores);
-      try{await fetch("/.netlify/functions/save-saboteurs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,top,scores})});}
-      catch(e){console.error("Save failed",e);}
+      setSubmitStatus("sending");
+      try{
+        await fetch("/.netlify/functions/save-saboteurs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,top,scores})});
+        setSubmitStatus("ok");
+      }catch(e){
+        console.error("Save failed",e);
+        setSubmitStatus("err");
+      }
       setSabResults(prev=>({...prev,[name]:{top,scores}}));setSelectedSab(top[0]);setPhase("results");
     }
   }
@@ -267,7 +273,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
     <div style={{maxWidth:480,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Saboteurs assessment<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.75rem"}}>20 questions · ~3 minutes · Discover your top inner critics and how they show up at work.</p>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.75rem"}}>20 questions · ~5 minutes · Discover your top inner critics and how they show up at work.</p>
       <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>Not sure what a saboteur is? Check out the <button onClick={()=>setTab("guide")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteur guide</button> first.</p>
       <label style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,display:"block",marginBottom:8}}>Your name</label>
       <select defaultValue="" onChange={e=>setName(e.target.value)} style={{width:"100%",marginBottom:"1rem",fontSize:14,background:"#FFFFFF",color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"9px 10px"}}>
@@ -280,7 +286,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
       </div>
       {submittedNames.length>0&&(
         <div style={{marginTop:"1.5rem",background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:6,padding:"1rem"}}>
-          <p style={{fontSize:11,color:B.sage,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10}}>Completed</p>
+          <p style={{fontSize:11,color:B.sage,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10}}>Completed this session</p>
           {submittedNames.map(n=>(
             <div key={n} style={{display:"flex",gap:8,marginBottom:6,alignItems:"center"}}>
               <span style={{fontSize:13,color:B.night}}>{n}</span>
@@ -326,7 +332,9 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
       <div style={{maxWidth:560,margin:"0 auto",fontFamily:sans}}>
         <p style={{fontSize:11,color:B.seaSage,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{name}'s results</p>
         <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Your top saboteurs</h2>
-        <p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Results saved</p>
+        {submitStatus==="ok"&&<p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Submitted — your facilitator has your results.</p>}
+        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1.25rem"}}>⚠ Submission failed — please let your facilitator know directly.</p>}
+        {submitStatus==="sending"&&<p style={{fontSize:12,color:B.seaSage,marginBottom:"1.25rem"}}>Submitting…</p>}
         <div style={{display:"flex",gap:8,marginBottom:"1.5rem",flexWrap:"wrap"}}>
           {myResult.top.map((k,i)=>(
             <button key={k} onClick={()=>setSelectedSab(k)} style={{padding:"5px 14px",borderRadius:20,fontSize:13,background:sKey===k?(i===0?B.chartreuse:B.emerald):i===0?B.chartreuse:B.surface,color:i===0?"#FFFFFF":sKey===k?"#FFFFFF":B.night,border:`1px solid ${i===0?B.emerald:B.border}`,cursor:"pointer",fontFamily:sans,fontWeight:sKey===k?500:400}}>
@@ -337,9 +345,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         <div style={{background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,padding:"1.25rem",marginBottom:"1.5rem"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
             <span style={{fontSize:22}}>{sab.emoji}</span>
-            <div>
-              <p style={{fontFamily:serif,fontWeight:400,margin:0,fontSize:15,color:B.sage}}>{sab.name}</p>
-            </div>
+            <div><p style={{fontFamily:serif,fontWeight:400,margin:0,fontSize:15,color:B.sage}}>{sab.name}</p></div>
           </div>
           <p style={{fontSize:13,lineHeight:1.7,color:B.night,opacity:0.8,marginBottom:12}}>{sab.desc}</p>
           <div style={{background:B.surface,borderRadius:6,padding:"0.875rem",marginBottom:12}}>
@@ -375,10 +381,10 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         </div>
         <div style={{background:B.surface,border:`1px solid ${B.border}`,borderRadius:8,padding:"1rem",marginBottom:"1.5rem"}}>
           <p style={{fontSize:11,color:B.sage,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:6}}>Next step</p>
-          <p style={{fontSize:13,color:B.night,opacity:0.8,lineHeight:1.7,margin:0}}>Head to the <button onClick={()=>setTab("weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans}}>Weather Map</button> tab and fill out your four zones. Use what you learned here — especially for the Stormy zone.</p>
+          <p style={{fontSize:13,color:B.night,opacity:0.8,lineHeight:1.7,margin:0}}>Head to the <button onClick={()=>setTab("weather")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:13,textDecoration:"underline",fontFamily:sans}}>Weather Map</button> tab and fill out your four zones.</p>
         </div>
         <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-          <Btn onClick={()=>{setPhase("intro");setAnswers({});setCurrentQ(0);setName("");}}>Take again</Btn>
+          <Btn onClick={()=>{setPhase("intro");setAnswers({});setCurrentQ(0);setName("");setSubmitStatus(null);}}>Take again</Btn>
           {submittedNames.length>=2&&<Btn primary onClick={()=>setViewTeam(true)}>View team summary →</Btn>}
         </div>
         <ElevateFooter/>
@@ -391,29 +397,26 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
 function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
   const[phase,setPhase]=useState("intro");
   const[currentName,setCurrentName]=useState("");
-  const[weatherReport,setWeatherReport]=useState(null);
-  const[generating,setGenerating]=useState(false);
   const names=Object.keys(submissions);
 
-  async function handleSubmit(name,responses){
-    try{await fetch("/.netlify/functions/save-weather-map",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,...responses})});}
-    catch(e){console.error("Save failed",e);}
-    setSubmissions(s=>({...s,[name]:{...responses}}));setPhase("waiting");
-  }
-
-  async function generateReport(){
-    setGenerating(true);
-    const summaries=Object.entries(submissions).map(([n,d])=>`${n}:\n  ☀️ Sunny: ${d.sunny}\n  ☁️ Overcast: ${d.overcast}\n  ⛈️ Stormy: ${d.stormy}\n  🌈 Clear-up: ${d.clearup}`).join("\n\n");
-    try{const res=await fetch("/.netlify/functions/generate-report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({summaries})});const data=await res.json();setWeatherReport(data.text);}
-    catch(e){setWeatherReport("Couldn't generate the report — but you have everything you need on screen to deliver it yourself!");}
-    setGenerating(false);
+  async function handleSubmit(name,responses,setSubmitStatus){
+    setSubmitStatus("sending");
+    try{
+      await fetch("/.netlify/functions/save-weather-map",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,...responses})});
+      setSubmitStatus("ok");
+    }catch(e){
+      console.error("Save failed",e);
+      setSubmitStatus("err");
+    }
+    setSubmissions(s=>({...s,[name]:{...responses}}));
+    setPhase("waiting");
   }
 
   if(phase==="intro")return(
     <div style={{maxWidth:520,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Team Weather Map<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Fill out your four zones privately — then reveal and discuss as a group.</p>
+      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Fill out your four zones — your facilitator will use these to guide the team discussion.</p>
       <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>Tip: Complete the <button onClick={()=>setTab("saboteurs")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteurs assessment</button> first — it gives you helpful vocabulary for the Stormy zone.</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:"2rem"}}>
         {ZONES.map(z=>(
@@ -438,32 +441,29 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
     </div>
   );
 
-  if(phase==="fill")return<FillScreen name={currentName} onSubmit={r=>handleSubmit(currentName,r)} onBack={()=>setPhase("intro")}/>;
+  if(phase==="fill")return<FillScreen name={currentName} onSubmit={(r,setStatus)=>handleSubmit(currentName,r,setStatus)} onBack={()=>setPhase("intro")}/>;
 
   if(phase==="waiting")return(
     <div style={{maxWidth:420,margin:"0 auto",textAlign:"center",fontFamily:sans}}>
       <div style={{fontSize:32,marginBottom:"1rem",color:B.chartreuse}}>✓</div>
-      <h2 style={{fontFamily:serif,fontSize:"1.5rem",fontWeight:400,color:B.sage,marginBottom:"0.75rem"}}>Forecast saved, {currentName}.</h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.5rem"}}>{names.length} of {MEMBERS.length} in so far.</p>
-      <p style={{fontSize:12,color:B.seaSage,marginBottom:"0.5rem"}}>{names.join(" · ")}</p>
-      <p style={{fontSize:12,color:B.chartreuse,marginBottom:"2rem"}}>✓ Saved — safe even if you close this tab.</p>
-      <div style={{display:"flex",gap:10,justifyContent:"center"}}>
-        <Btn onClick={()=>setPhase("intro")}>← Home</Btn>
-        {names.length>=2&&<Btn primary onClick={()=>setPhase("reveal")}>Start reveal →</Btn>}
-      </div>
+      <h2 style={{fontFamily:serif,fontSize:"1.5rem",fontWeight:400,color:B.sage,marginBottom:"0.75rem"}}>Forecast submitted, {currentName}.</h2>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.8,marginBottom:"0.5rem"}}>{names.length} of {MEMBERS.length} submitted so far.</p>
+      <p style={{fontSize:12,color:B.seaSage,marginBottom:"2rem"}}>{names.join(" · ")}</p>
+      <Btn onClick={()=>setPhase("intro")}>← Back</Btn>
       <ElevateFooter/>
     </div>
   );
 
   if(phase==="reveal")return<RevealScreen submissions={submissions} onHome={()=>setPhase("intro")} onReport={()=>setPhase("report")}/>;
-  if(phase==="report")return<ReportScreen submissions={submissions} sabResults={sabResults} weatherReport={weatherReport} generating={generating} onGenerate={generateReport} onBack={()=>setPhase("reveal")} onHome={()=>setPhase("intro")}/>;
+  if(phase==="report")return<ReportScreen submissions={submissions} sabResults={sabResults} onBack={()=>setPhase("reveal")} onHome={()=>setPhase("intro")}/>;
 }
 
-// ─── FILL SCREEN (with preview before submit) ─────────────────────────────────
+// ─── FILL SCREEN ──────────────────────────────────────────────────────────────
 function FillScreen({name,onSubmit,onBack}){
   const[responses,setResponses]=useState({sunny:"",overcast:"",stormy:"",clearup:""});
   const[active,setActive]=useState("sunny");
   const[showPreview,setShowPreview]=useState(false);
+  const[submitStatus,setSubmitStatus]=useState(null);
   const zone=ZONES.find(z=>z.id===active);const zoneIdx=ZONES.findIndex(z=>z.id===active);
   const filledCount=ZONES.filter(z=>responses[z.id].trim()).length;const allFilled=filledCount===ZONES.length;
 
@@ -474,7 +474,7 @@ function FillScreen({name,onSubmit,onBack}){
           <p style={{fontSize:11,letterSpacing:"0.12em",textTransform:"uppercase",color:B.sage}}>{name}'s forecast — review</p>
           <button onClick={()=>setShowPreview(false)} style={{fontSize:11,color:B.seaSage,background:"transparent",border:"none",cursor:"pointer"}}>← edit</button>
         </div>
-        <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"1.25rem"}}>Take a moment to review your forecast before submitting. You can go back and edit any zone.</p>
+        <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"1.25rem"}}>Take a moment to review before submitting. You can go back and edit any zone.</p>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:"1.5rem"}}>
           {ZONES.map(z=>(
             <div key={z.id} style={{background:z.bg,border:`0.5px solid ${z.border}`,borderRadius:10,padding:"1.25rem"}}>
@@ -488,9 +488,12 @@ function FillScreen({name,onSubmit,onBack}){
             </div>
           ))}
         </div>
+        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1rem"}}>⚠ Submission failed — please let your facilitator know directly.</p>}
         <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
           <Btn onClick={()=>setShowPreview(false)}>← Edit a zone</Btn>
-          <Btn primary onClick={()=>onSubmit(responses)}>Submit my forecast →</Btn>
+          <Btn primary disabled={submitStatus==="sending"} onClick={()=>onSubmit(responses,setSubmitStatus)}>
+            {submitStatus==="sending"?"Submitting…":"Submit my forecast →"}
+          </Btn>
         </div>
       </div>
     );
@@ -559,42 +562,20 @@ function RevealScreen({submissions,onHome,onReport}){
       </div>
       <div style={{display:"flex",justifyContent:"space-between"}}>
         {idx>0?<Btn onClick={()=>setIdx(i=>i-1)}>← {names[idx-1]}</Btn>:<div/>}
-        {idx<names.length-1?<Btn primary onClick={()=>setIdx(i=>i+1)}>Next → {names[idx+1]}</Btn>:<Btn primary onClick={onReport}>Team report →</Btn>}
+        {idx<names.length-1?<Btn primary onClick={()=>setIdx(i=>i+1)}>Next → {names[idx+1]}</Btn>:<Btn primary onClick={onReport}>Team recap →</Btn>}
       </div>
     </div>
   );
 }
 
 // ─── REPORT SCREEN ────────────────────────────────────────────────────────────
-function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerate,onBack,onHome}){
-  const[sending,setSending]=useState(false);
-  const[sent,setSent]=useState(false);
+function ReportScreen({submissions,sabResults,onBack,onHome}){
   const names=Object.keys(submissions);
-
-  async function handleSendReport(){
-    setSending(true);
-    try{
-      await fetch("/.netlify/functions/send-report",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          weatherMaps:submissions,
-          saboteurResults:sabResults,
-          aiWrapUp:weatherReport,
-        }),
-      });
-      setSent(true);
-    }catch(e){
-      alert("Couldn't send — try again.");
-    }
-    setSending(false);
-  }
-
   return(
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.4rem"}}>Experience Team · Offsite 2026</p>
-      <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Our collective forecast<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's climate, side by side.</p>
+      <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.4rem"}}>Team recap<span style={{color:B.emerald}}>.</span></h2>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Everyone's forecast, side by side — use this to spot patterns and close the session.</p>
       {ZONES.map(z=>(
         <div key={z.id} style={{marginBottom:"2rem"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,paddingBottom:10,borderBottom:`1px solid ${B.border}`}}>
@@ -611,23 +592,9 @@ function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerat
           </div>
         </div>
       ))}
-      <div style={{background:B.surface,border:`1px solid ${B.border}`,borderRadius:8,padding:"1.25rem",marginBottom:"1.5rem"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:weatherReport?"1rem":"0"}}>
-          <div>
-            <p style={{fontSize:11,letterSpacing:"0.1em",textTransform:"uppercase",color:B.sage,marginBottom:3}}>Team Weather Report</p>
-            <p style={{fontSize:12,color:B.seaSage,margin:0}}>AI-generated wrap-up script based on everyone's responses</p>
-          </div>
-          {!weatherReport&&<Btn primary onClick={onGenerate} disabled={generating}>{generating?"Generating…":"Generate report ✦"}</Btn>}
-        </div>
-        {weatherReport&&<div style={{fontSize:13,color:B.night,lineHeight:1.85,whiteSpace:"pre-wrap",opacity:0.85,marginTop:"1rem"}}>{weatherReport}</div>}
-      </div>
-      <div style={{display:"flex",gap:10,alignItems:"center"}}>
+      <div style={{display:"flex",gap:10,marginTop:"1rem"}}>
         <Btn onClick={onBack}>← Back to reveal</Btn>
         <Btn onClick={onHome}>Home</Btn>
-        <Btn primary onClick={handleSendReport} disabled={sending||sent}>
-          {sent?"✓ Sent":sending?"Sending…":"Email me this report"}
-        </Btn>
-        {sent&&<span style={{fontSize:12,color:B.chartreuse}}>Sent to abass@notablecap.com</span>}
       </div>
       <ElevateFooter/>
     </div>
@@ -636,20 +603,20 @@ function ReportScreen({submissions,sabResults,weatherReport,generating,onGenerat
 
 // ─── FACILITATOR TAB ──────────────────────────────────────────────────────────
 function FacilitatorTab({setSabResults,setSubmissions}){
-  const defaultSab=()=>({top:["judge","judge","judge"],scores:Object.fromEntries(SAB_KEYS.map(k=>[k,0]))});
+  const defaultSab=()=>({top:["","",""],scores:Object.fromEntries(SAB_KEYS.map(k=>[k,0]))});
   const defaultWeather=()=>({sunny:"",overcast:"",stormy:"",clearup:""});
-
   const[data,setData]=useState(()=>Object.fromEntries(MEMBERS.map(m=>[m,{sab:defaultSab(),weather:defaultWeather()}])));
-  const[saved,setSaved]=useState(false);
+  const[loadStatus,setLoadStatus]=useState(null);   // null | "ok"
+  const[emailStatus,setEmailStatus]=useState(null); // null | "sending" | "ok" | "err"
 
-function setSabTop(member,idx,val){
-  setData(d=>({...d,[member]:{...d[member],sab:{...d[member].sab,top:d[member].sab.top.map((k,i)=>i===idx?val:k)}}}));
-}
+  function setSabTop(member,idx,val){
+    setData(d=>({...d,[member]:{...d[member],sab:{...d[member].sab,top:d[member].sab.top.map((k,i)=>i===idx?val:k)}}}));
+  }
   function setWeather(member,zone,val){
     setData(d=>({...d,[member]:{...d[member],weather:{...d[member].weather,[zone]:val}}}));
   }
 
-  function handleSave(){
+  function handleLoad(){
     const newSab={};const newWeather={};
     MEMBERS.forEach(m=>{
       const top=data[m].sab.top.filter(k=>k&&SAB_KEYS.includes(k));
@@ -659,14 +626,44 @@ function setSabTop(member,idx,val){
     });
     setSabResults(prev=>({...prev,...newSab}));
     setSubmissions(prev=>({...prev,...newWeather}));
-    setSaved(true);setTimeout(()=>setSaved(false),3000);
+    setLoadStatus("ok");
+    setTimeout(()=>setLoadStatus(null),3000);
+  }
+
+  async function handleEmail(){
+    setEmailStatus("sending");
+    const SABOTEUR_NAMES={judge:"The Judge",avoider:"Avoider",controller:"Controller",hyperAchiever:"Hyper-Achiever",hyperRational:"Hyper-Rational",hyperVigilant:"Hyper-Vigilant",pleaser:"Pleaser",restless:"Restless",stickler:"Stickler",victim:"Victim"};
+
+    const bodyLines=MEMBERS.map(m=>{
+      const top=data[m].sab.top.filter(k=>k).map(k=>SABOTEUR_NAMES[k]||k);
+      const w=data[m].weather;
+      return `${m}\nTop 3 Saboteurs: ${top.length?top.join(", "):"—"}\n☀️  Sunny: ${w.sunny||"—"}\n☁️  Overcast: ${w.overcast||"—"}\n⛈️  Stormy: ${w.stormy||"—"}\n🌈  Clear-up: ${w.clearup||"—"}`;
+    }).join("\n\n─────────────────\n\n");
+
+    const emailBody=`EXPERIENCE TEAM — FACILITATOR SUMMARY\nOffsite 2026\n\n${"─".repeat(40)}\n\n${bodyLines}`;
+
+    try{
+      await fetch("/.netlify/functions/send-report",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          weatherMaps:Object.fromEntries(MEMBERS.map(m=>[m,data[m].weather])),
+          saboteurResults:Object.fromEntries(MEMBERS.map(m=>[m,{top:data[m].sab.top.filter(k=>k)}])),
+          aiWrapUp:emailBody,
+        }),
+      });
+      setEmailStatus("ok");
+    }catch(e){
+      console.error("Email failed",e);
+      setEmailStatus("err");
+    }
   }
 
   return(
     <div style={{maxWidth:700,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Facilitator view</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Enter team data<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Pre-fill saboteur results and weather maps on behalf of the team. Saving here will power the reveal screen and AI wrap-up.</p>
+      <p style={{fontSize:13,color:B.night,opacity:0.7,lineHeight:1.7,marginBottom:"2rem"}}>Enter each participant's responses from their emailed submissions. Load into session to power the Reveal screen, then email yourself a summary for your Notion records.</p>
       <div style={{display:"flex",flexDirection:"column",gap:"2rem",marginBottom:"2rem"}}>
         {MEMBERS.map(m=>(
           <div key={m} style={{background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:10,padding:"1.25rem"}}>
@@ -676,11 +673,7 @@ function setSabTop(member,idx,val){
               {[0,1,2].map(i=>(
                 <div key={i} style={{display:"flex",flexDirection:"column",gap:4,flex:1,minWidth:140}}>
                   <label style={{fontSize:10,color:B.seaSage,letterSpacing:"0.06em"}}># {i+1}</label>
-                  <select
-                    value={data[m].sab.top[i]||""}
-                    onChange={e=>setSabTop(m,i,e.target.value)}
-                    style={{fontSize:13,background:B.surface,color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"7px 8px",fontFamily:sans}}
-                  >
+                  <select value={data[m].sab.top[i]||""} onChange={e=>setSabTop(m,i,e.target.value)} style={{fontSize:13,background:B.surface,color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"7px 8px",fontFamily:sans}}>
                     <option value="">Select…</option>
                     {SAB_KEYS.map(k=><option key={k} value={k}>{SABOTEURS[k].name}</option>)}
                   </select>
@@ -692,22 +685,23 @@ function setSabTop(member,idx,val){
               {ZONES.map(z=>(
                 <div key={z.id}>
                   <label style={{fontSize:11,color:B.seaSage,display:"block",marginBottom:3}}>{z.icon} {z.label} — {z.title}</label>
-                  <textarea
-                    value={data[m].weather[z.id]}
-                    onChange={e=>setWeather(m,z.id,e.target.value)}
-                    placeholder={z.placeholder}
-                    rows={2}
-                    style={{width:"100%",fontSize:12,background:B.surface,color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"8px 10px",fontFamily:sans,lineHeight:1.6,resize:"vertical",boxSizing:"border-box"}}
-                  />
+                  <textarea value={data[m].weather[z.id]} onChange={e=>setWeather(m,z.id,e.target.value)} placeholder={z.placeholder} rows={2} style={{width:"100%",fontSize:12,background:B.surface,color:B.night,border:`1px solid ${B.border}`,borderRadius:4,padding:"8px 10px",fontFamily:sans,lineHeight:1.6,resize:"vertical",boxSizing:"border-box"}}/>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div style={{display:"flex",alignItems:"center",gap:12}}>
-        <Btn primary onClick={handleSave} style={{minWidth:160}}>Save all data →</Btn>
-        {saved&&<span style={{fontSize:12,color:B.chartreuse}}>✓ Saved to reveal screen</span>}
+      <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
+        <Btn primary onClick={handleLoad} style={{minWidth:160}}>Load into session →</Btn>
+        {loadStatus==="ok"&&<span style={{fontSize:12,color:B.chartreuse}}>✓ Loaded — Reveal screen is ready</span>}
+      </div>
+      <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap",marginTop:12}}>
+        <Btn onClick={handleEmail} disabled={emailStatus==="sending"||emailStatus==="ok"} style={{minWidth:160}}>
+          {emailStatus==="sending"?"Sending…":emailStatus==="ok"?"✓ Sent":"Email me this summary"}
+        </Btn>
+        {emailStatus==="ok"&&<span style={{fontSize:12,color:B.chartreuse}}>✓ Sent to abass@notablecap.com</span>}
+        {emailStatus==="err"&&<span style={{fontSize:12,color:"#c0392b"}}>⚠ Failed — try again</span>}
       </div>
       <ElevateFooter/>
     </div>
@@ -719,20 +713,6 @@ export default function App(){
   const[tab,setTab]=useState("welcome");
   const[submissions,setSubmissions]=useState({});
   const[sabResults,setSabResults]=useState({});
-  const[loading,setLoading]=useState(true);
-
-  useEffect(()=>{
-    fetch("/.netlify/functions/get-submissions")
-      .then(r=>r.json())
-      .then(data=>{
-        if(data.submissions){const clean={};Object.entries(data.submissions).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});setSubmissions(clean);}
-        if(data.sabResults){const clean={};Object.entries(data.sabResults).forEach(([k,v])=>{if(k&&k!=="undefined")clean[k]=v;});setSabResults(clean);}
-      })
-      .catch(e=>console.error("Could not load",e))
-      .finally(()=>setLoading(false));
-  },[]);
-
-  if(loading)return(<div style={{background:B.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}><p style={{fontFamily:sans,fontSize:13,color:B.seaSage}}>Loading…</p></div>);
 
   return(
     <div style={{background:B.bg,minHeight:"100vh",padding:"2rem 1.5rem",color:B.night}}>
