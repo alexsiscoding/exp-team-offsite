@@ -697,7 +697,7 @@ function FacilitatorTab({setSabResults,setSubmissions,setTab}){
         body:JSON.stringify({
           weatherMaps:Object.fromEntries(MEMBERS.map(m=>[m,data[m].weather])),
           saboteurResults:Object.fromEntries(MEMBERS.map(m=>[m,{top:data[m].sab.top.filter(k=>k).map(k=>SABOTEUR_NAMES[k]||k)}])),
-          aiWrapUp:"Facilitator summary — no AI section.",
+          aiWrapUp:"",
         }),
       });
       setEmailStatus("ok");
