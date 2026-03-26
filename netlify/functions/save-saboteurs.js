@@ -12,9 +12,9 @@ const SABOTEUR_NAMES = {
 };
 
 const MAX_SCORES = {
-  judge:         6, avoider:       4, controller:    4,
-  hyperAchiever: 4, hyperRational: 4, hyperVigilant: 4,
-  pleaser:       4, restless:      4, stickler:      4, victim:        4,
+  judge:         20, avoider:       15, controller:    15,
+  hyperAchiever: 15, hyperRational: 15, hyperVigilant: 15,
+  pleaser:       15, restless:      15, stickler:      15, victim:        10,
 };
 
 exports.handler = async (event) => {
