@@ -94,7 +94,8 @@ function TabBar({active,set,weatherCount,sabCount}){
     {id:"guide",label:"Saboteur Guide"},
 {id:"saboteurs",label:"Saboteurs"},
     {id:"weather",label:"Weather Map"},
-    {id:"facilitator",label:"·",title:"Facilitator"},
+   {id:"meaning",label:"What This Means"},
+{id:"facilitator",label:"·",title:"Facilitator"},
   ];
   return(
     <div style={{display:"flex",borderBottom:`2px solid ${B.border}`,marginBottom:"2rem",flexWrap:"wrap"}}>
@@ -122,7 +123,7 @@ function WelcomeTab({setTab}){
           {num:1, icon:"📖", label:"Read the Saboteur Guide", tab:"guide",      desc:"Get familiar with all 10 saboteur types before you take the assessment. This gives you the vocabulary you'll need for the Weather Map."},
           {num:2, icon:"🧠", label:"Take the Saboteur Assessment", tab:"saboteurs", desc:"20 questions, ~5 minutes. Your results will be emailed to your facilitator to prepare for the session."},
           {num:3, icon:"🌤️", label:"Fill Out Your Weather Map", tab:"weather",   desc:"4 zones describing how you work at your best, your early stress signals, what overwhelm looks like, and how the team can help. Takes about 10–15 minutes."},
-          {num:4, icon:"🌈", label:"Reveal & Discuss as a Team", tab:null,       desc:"During the session, your facilitator will walk through everyone's forecast together. No prep needed on the day — just come ready to engage."},
+          {num:4, icon:"🌈", label:"Reveal & Discuss as a Team", tab:null,       desc:"During the session, your itator will walk through everyone's forecast together. No prep needed on the day — just come ready to engage."},
         ].map((item)=>(
           <div key={item.num} style={{display:"flex",gap:14,padding:"0.875rem 1rem",background:"#FFFFFF",border:`1px solid ${B.border}`,borderRadius:8,alignItems:"flex-start"}}>
             <div style={{width:28,height:28,borderRadius:"50%",background:B.surface,border:`1px solid ${B.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:B.sage,flexShrink:0,marginTop:1}}>{item.num}</div>
@@ -324,7 +325,7 @@ function SaboteursTab({sabResults,setSabResults,setTab}){
         <p style={{fontSize:11,color:B.seaSage,letterSpacing:"0.1em",textTransform:"uppercase",marginBottom:4}}>{name}'s Results</p>
         <h2 style={{fontFamily:serif,fontSize:"1.6rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Your Top Saboteurs</h2>
         {submitStatus==="ok"&&<p style={{fontSize:12,color:B.chartreuse,marginBottom:"1.25rem"}}>✓ Your responses have been emailed to abass@notablecap.com and will be used to prepare the team session.</p>}
-        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1.25rem"}}>⚠ Submission failed — please let your facilitator know directly.</p>}
+        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1.25rem"}}>⚠ Submission failed — please let your itator know directly.</p>}
         {submitStatus==="sending"&&<p style={{fontSize:12,color:B.seaSage,marginBottom:"1.25rem"}}>Submitting…</p>}
 
         <div style={{background:"#F0F7F0",border:`1px solid #B8D4B8`,borderRadius:8,padding:"0.875rem 1rem",marginBottom:"1.25rem"}}>
@@ -416,8 +417,8 @@ function WeatherTab({submissions,setSubmissions,sabResults,setTab}){
     <div style={{maxWidth:520,margin:"0 auto",fontFamily:sans}}>
       <p style={{fontSize:11,letterSpacing:"0.18em",textTransform:"uppercase",color:B.seaSage,marginBottom:"0.5rem"}}>Experience Team · Offsite 2026</p>
       <h2 style={{fontFamily:serif,fontSize:"1.75rem",fontWeight:400,color:B.sage,marginBottom:"0.5rem"}}>Team Weather Map<span style={{color:B.emerald}}>.</span></h2>
-      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Fill out your four zones — your facilitator will use these to guide the team discussion.</p>
-      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Your responses will be emailed to your facilitator and saved to a shared team Notion page — just for us. Think of it as a record of how we work, held within the team. The kind of thing that makes onboarding a new teammate or checking in after a hard quarter actually meaningful.</p>
+      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Fill out your four zones — your itator will use these to guide the team discussion.</p>
+      <p style={{fontSize:13,color:B.night,lineHeight:1.8,marginBottom:"0.75rem",opacity:0.7}}>Your responses will be emailed to your itator and saved to a shared team Notion page — just for us. Think of it as a record of how we work, held within the team. The kind of thing that makes onboarding a new teammate or checking in after a hard quarter actually meaningful.</p>
       <p style={{fontSize:12,color:B.seaSage,lineHeight:1.7,marginBottom:"2rem"}}>Tip: Complete the <button onClick={()=>setTab("saboteurs")} style={{background:"none",border:"none",padding:0,color:B.chartreuse,cursor:"pointer",fontSize:12,textDecoration:"underline",fontFamily:sans}}>Saboteurs Assessment</button> first — it gives you helpful vocabulary for the Stormy zone.</p>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:"2rem"}}>
         {ZONES.map(z=>(
@@ -484,7 +485,7 @@ function FillScreen({name,onSubmit,onBack}){
             </div>
           ))}
         </div>
-        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1rem"}}>⚠ Submission failed — please let your facilitator know directly.</p>}
+        {submitStatus==="err"&&<p style={{fontSize:12,color:"#c0392b",marginBottom:"1rem"}}>⚠ Submission failed — please let your itator know directly.</p>}
         <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
           <Btn onClick={()=>setShowPreview(false)}>← Edit a Zone</Btn>
           <Btn primary disabled={submitStatus==="sending"} onClick={()=>onSubmit(responses,setSubmitStatus)}>
