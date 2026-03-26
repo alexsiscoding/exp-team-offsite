@@ -18,8 +18,8 @@ exports.handler = async (event) => {
     .map(([name, result]) => `${name}: ${result.top.join(", ")}`)
     .join("\n");
 
-  const emailBody = `TEAM WEATHER MAPS\n${"─".repeat(40)}\n\n${weatherSection}\n\n\nSABOTEUR TOP 3s\n${"─".repeat(40)}\n\n${sabSection}\n\n\nAI WRAP-UP\n${"─".repeat(40)}\n\n${aiWrapUp || "Not yet generated."}`;
-
+const emailBody = `TEAM WEATHER MAPS\n${"─".repeat(40)}\n\n${weatherSection}\n\n\nSABOTEUR TOP 3s\n${"─".repeat(40)}\n\n${sabSection}`;
+  
   await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
