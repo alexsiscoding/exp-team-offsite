@@ -63,7 +63,7 @@ const QUESTIONS = [
 function maxScore(k){return QUESTIONS.filter(q=>q.sab===k).reduce((s,q)=>s+q.w*5,0);}
 function pct(score,k){return Math.round((score/maxScore(k))*100);}
 function computeScores(ans){const s={};Object.keys(SABOTEURS).forEach(k=>s[k]=0);QUESTIONS.forEach(q=>{if(ans[q.id])s[q.sab]+=ans[q.id]*q.w;});return s;}
-function getTop(scores,n=3){return Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k);}
+function getTop(scores,n=3){return Object.entries(scores).sort((a,b)=>pct(b[1],b[0])-pct(a[1],a[0])).slice(0,n).map(([k])=>k);}
 
 function Btn({children,onClick,primary,disabled,style={}}){
   return(<button onClick={onClick} disabled={disabled} style={{fontFamily:sans,fontSize:13,padding:"8px 18px",borderRadius:4,cursor:disabled?"default":"pointer",background:primary?(disabled?"#9A9690":B.chartreuse):"transparent",border:`1px solid ${primary?(disabled?B.border:B.emerald):B.border}`,color:primary?(disabled?"#C8C4C0":"#FFFFFF"):B.night,opacity:disabled?0.6:1,...style}}>{children}</button>);
@@ -92,7 +92,7 @@ function TabBar({active,set,weatherCount,sabCount}){
   const tabs=[
     {id:"welcome",label:"Welcome"},
     {id:"guide",label:"Saboteur Guide"},
-    {id:"saboteurs",label:"Saboteurs",badge:sabCount>0?`${sabCount}/${MEMBERS.length}`:null},
+{id:"saboteurs",label:"Saboteurs"},
     {id:"weather",label:"Weather Map",badge:weatherCount>0?`${weatherCount}/${MEMBERS.length}`:null},
     {id:"facilitator",label:"·",title:"Facilitator"},
   ];
